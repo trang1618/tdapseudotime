@@ -17,6 +17,7 @@ remotes::install_github('trang1618/tdapseudotime')
 
 ```{r setup, message=FALSE, warning=FALSE}
 library(tdapseudotime)
+library(igraph)
 library(mice)
 library(dplyr)
 library(tidyr)
@@ -115,19 +116,18 @@ svd1 <- - trunc_svds$u[, 1]
 svd2 <- - trunc_svds$u[, 2]
 ```
 
-Check cosine similarity values.
+Uncomment to check cosine similarity values. (Optional)
 ```{r}
-hist(apply(cosine_sim, 1, mean))
-hist(apply(cosine_sim, 1, min))
+# hist(apply(cosine_sim, 1, mean))
+# hist(apply(cosine_sim, 1, min))
 ```
-
 
 Enrich topology by any variable.
 Use 'time' for now.
 ```{r}
 f_time <- processed_data %>% 
   select(ID = id, val = time) # or val = CRP, etc.
-hist(as.numeric(f_time$val))
+# hist(as.numeric(f_time$val))
 ```
 
 ```{r include=FALSE}
@@ -187,7 +187,7 @@ similarity_df <- out_trajectories[[1]]
 id_node_cluster <- out_trajectories[[2]]
 ```
 
-```{r}
+```{r out.width=10}
 most_similar_traj <- similarity_df %>%
   group_by(covid_id) %>%
   slice(which.max(JW)) %>% # use Jaccard similarity for now
@@ -198,6 +198,8 @@ most_similar_traj <- similarity_df %>%
     trajNumb %in% c(7, 8 ) ~ "P>G>P>B",
     TRUE ~ ""
   ))
+
+head(most_similar_traj)
 ```
 
 ## Write output
@@ -222,7 +224,7 @@ plot_dat %>%
         plot.title = element_text(size = 8, hjust = 0.5))
 
 plot_dat %>% 
-  select(cluster, lab_value_names) %>% 
+  select(cluster, all_of(lab_value_names)) %>% 
   pivot_longer(- cluster, names_to = 'Lab', values_to = 'lab_value') %>% 
   ggplot(aes(x = cluster, y = lab_value, fill = cluster)) +
   geom_boxplot(alpha = 0.8) + 

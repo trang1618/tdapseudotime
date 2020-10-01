@@ -1,0 +1,26 @@
+destination: docs
+template:
+  params:
+    bootswatch: simplex
+  opengraph:
+    twitter:
+      creator: "@trang1618"
+      card: summary_large_image
+navbar:
+  structure:
+    left:  [home, reference, articles]
+    right: [github, twitter]
+  components:
+    home:
+      icon: fa-home
+      href: index.html
+    reference:
+      text: Documentation
+      href: reference/index.html
+    github:
+      icon: fa-github
+      href: https://github.com/trang1618/tdapseudotime
+    twitter:
+      icon: fa-twitter
+      href: https://twitter.com/trang1618
+

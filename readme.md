@@ -11,6 +11,7 @@ remotes::install_github('trang1618/tdapseudotime')
 
 ``` r
 library(tdapseudotime)
+library(igraph)
 library(mice)
 library(dplyr)
 library(tidyr)
@@ -90,29 +91,20 @@ svd1 <- - trunc_svds$u[, 1]
 svd2 <- - trunc_svds$u[, 2]
 ```
 
-Check cosine similarity values.
+Uncomment to check cosine similarity values. (Optional)
 
 ``` r
-hist(apply(cosine_sim, 1, mean))
+# hist(apply(cosine_sim, 1, mean))
+# hist(apply(cosine_sim, 1, min))
 ```
-
-![](man/figures/unnamed-chunk-10-1.png)<!-- -->
-
-``` r
-hist(apply(cosine_sim, 1, min))
-```
-
-![](man/figures/unnamed-chunk-10-2.png)<!-- -->
 
 Enrich topology by any variable. Use ‘time’ for now.
 
 ``` r
 f_time <- processed_data %>% 
   select(ID = id, val = time) # or val = CRP, etc.
-hist(as.numeric(f_time$val))
+# hist(as.numeric(f_time$val))
 ```
-
-![](man/figures/unnamed-chunk-11-1.png)<!-- -->
 
 ## Run function TDA Mapper
 
@@ -184,7 +176,22 @@ most_similar_traj <- similarity_df %>%
     trajNumb %in% c(7, 8 ) ~ "P>G>P>B",
     TRUE ~ ""
   ))
+
+head(most_similar_traj)
 ```
+
+    ## # A tibble: 6 x 12
+    ## # Groups:   covid_id [6]
+    ##   covid_id trajPaz trajPazclusters trajNumb trajElmnts trajLenght    SJ    SI
+    ##   <chr>    <chr>   <chr>              <int> <chr>           <int> <dbl> <dbl>
+    ## 1 1        26 27 … 3 4                    7 23 22 28 …         15 0.4   1    
+    ## 2 10       20 21 … 3 4 1 2                7 23 22 28 …         15 0.381 0.242
+    ## 3 100      23 24 … 4 1 3                  8 29 28 27 …         14 0.524 0.611
+    ## 4 101      13 14 … 1 3 2 4                7 23 22 28 …         15 0.424 0.117
+    ## 5 102      9 10 1… 1 2 3 4                7 23 22 28 …         15 0.267 0.229
+    ## 6 103      20 21 … 3 4 1 2                7 23 22 28 …         15 0.519 0.275
+    ## # … with 4 more variables: SL <dbl>, JW <dbl>, clusterTraj <chr>,
+    ## #   trajNumbManual <chr>
 
 ## Write output
 
@@ -217,7 +224,7 @@ plot_dat %>%
 
 ``` r
 plot_dat %>% 
-  select(cluster, lab_value_names) %>% 
+  select(cluster, all_of(lab_value_names)) %>% 
   pivot_longer(- cluster, names_to = 'Lab', values_to = 'lab_value') %>% 
   ggplot(aes(x = cluster, y = lab_value, fill = cluster)) +
   geom_boxplot(alpha = 0.8) + 
@@ -228,11 +235,6 @@ plot_dat %>%
   facet_wrap(~ Lab, scales = 'free_y')
 ```
 
-    ## Note: Using an external vector in selections is ambiguous.
-    ## ℹ Use `all_of(lab_value_names)` instead of `lab_value_names` to silence this message.
-    ## ℹ See <https://tidyselect.r-lib.org/reference/faq-external-vector.html>.
-    ## This message is displayed once per session.
-
 ![](man/figures/unnamed-chunk-19-2.png)<!-- -->
 
 ``` r
@@ -242,6 +244,11 @@ processed_data_traj <- processed_data %>%
   select(time, trajNumbManual, lab_value_names) %>% 
   distinct()
 ```
+
+    ## Note: Using an external vector in selections is ambiguous.
+    ## ℹ Use `all_of(lab_value_names)` instead of `lab_value_names` to silence this message.
+    ## ℹ See <https://tidyselect.r-lib.org/reference/faq-external-vector.html>.
+    ## This message is displayed once per session.
 
 ``` r
 processed_data_traj  %>% 
