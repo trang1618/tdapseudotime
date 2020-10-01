@@ -1,7 +1,10 @@
 ---
-title: "An example workflow of package tdapseudotime"
+title: "An example workflow"
 output: rmarkdown::github_document
 ---
+
+{tdapseudotime} :package: contains functions to implement [...]
+Original source code is from Arianna's [github page](https://github.com/aridag/TDA_PSEUDOTIME).
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(

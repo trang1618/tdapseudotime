@@ -10,7 +10,7 @@
 #' @param my_colors Character vector of hex values specifying
 #' color palette for enrichment.
 #'
-#' @import dplyr
+#' @importFrom dplyr left_join arrange mutate filter bind_rows distinct select pull
 #' @return igraph object of the graph output.
 #' @export
 #'

@@ -4,7 +4,7 @@
 #' @param processed_data Dataframe. Processed from original data.
 #'
 #' @import TDAmapper
-#' @import igraph
+#' @importFrom igraph V E mst edge.betweenness.community betweenness graph.adjacency
 #' @return Dataframe of id, node and covid_id.
 #' @export
 #'

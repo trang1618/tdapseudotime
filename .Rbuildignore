@@ -5,3 +5,4 @@
 ^MyDataSim\.csv$
 ^LICENSE\.md$
 ^\.github$
+^_pkgdown\.yml$
