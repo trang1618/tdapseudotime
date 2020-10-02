@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Adjust colors of nodes using enrichment function. — color_vertex • tdapseudotime</title>
+<title>Run TDAMapper on a matrix of lab values — map_tda • tdapseudotime</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Adjust colors of nodes using enrichment function. — color_vertex" />
-<meta property="og:description" content="Adjust colors of nodes using enrichment function." />
+<meta property="og:title" content="Run TDAMapper on a matrix of lab values — map_tda" />
+<meta property="og:description" content="Run TDAMapper on a matrix of lab values" />
 <meta property="og:image" content="https://trang1618.github.io/tdapseudotime/reference/figures/card.png" />
 <meta property="og:image:alt" content="treeheatr" />
 <meta name="twitter:card" content="summary" />
@@ -119,40 +119,52 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Adjust colors of nodes using enrichment function.</h1>
+    <h1>Run TDAMapper on a matrix of lab values</h1>
     
-    <div class="hidden name"><code>color_vertex.Rd</code></div>
+    <div class="hidden name"><code>map_tda.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Adjust colors of nodes using enrichment function.</p>
+    <p>Run TDAMapper on a matrix of lab values</p>
     </div>
 
-    <pre class="usage"><span class='fu'>color_vertex</span><span class='op'>(</span><span class='va'>f_sim_map</span>, <span class='va'>f_time</span>, <span class='va'>my_colors</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>map_tda</span><span class='op'>(</span><span class='va'>lab_values_mat</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>f_sim_map</th>
-      <td><p>TDAmapper object</p></td>
+      <th>lab_values_mat</th>
+      <td><p>Matrix of (imputed) lab values.</p></td>
     </tr>
     <tr>
-      <th>f_time</th>
-      <td><p>Data frame of the original data but
-with only two columns: ID and val (time)</p></td>
-    </tr>
-    <tr>
-      <th>my_colors</th>
-      <td><p>Character vector of hex values specifying
-color palette for enrichment.</p></td>
+      <th>...</th>
+      <td><p>Arguments to pass to TDAMapper()</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Data frame of vertex ids and colors.</p>
+    <p>TDAMapper object which is a list of items named <code>adjacency</code>
+(adjacency matrix for the edges), <code>num_vertices</code> (integer number of vertices),
+<code>level_of_vertex</code> (vector with <code>level_of_vertex[i]</code> = index of
+the level set for vertex i), <code>points_in_vertex</code> (list with
+<code>points_in_vertex[[i]]</code> = vector of indices of points in vertex i),
+<code>points_in_level</code> (list with <code>points_in_level[[i]]</code> = vector of indices
+of points in level set i, and <code>vertices_in_level</code> (list with
+<code>vertices_in_level[[i]]</code> = vector of indices of vertices in level set i.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>my_tda</span> <span class='op'>&lt;-</span> <span class='fu'>map_tda</span><span class='op'>(</span><span class='va'>scaled_lab_mat</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>my_tda</span>, max.lev <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; List of 6
+#&gt;  $ adjacency        : num [1:26, 1:26] 0 1 0 0 0 1 0 0 0 0 ...
+#&gt;  $ num_vertices     : num 26
+#&gt;  $ level_of_vertex  : int [1:26] 1 2 3 4 5 6 7 8 9 10 ...
+#&gt;  $ points_in_vertex :List of 26
+#&gt;  $ points_in_level  :List of 25
+#&gt;  $ vertices_in_level:List of 25
+#&gt;  - attr(*, "class")= chr "TDAmapper"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -13,7 +13,9 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Temporal Phenotyping via Topological Data Analysis and Pseudo Time">
 <meta property="og:description" content="This package contains functions to run the temporal phenotyping via topological data analysis.">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://trang1618.github.io/tdapseudotime/reference/figures/card.png">
+<meta property="og:image:alt" content="treeheatr">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@trang1618">
 <meta name="twitter:site" content="@trang1618">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -75,9 +77,10 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="an-example-workflow-of-package-tdapseudotime" class="section level1">
+<div id="an-example-workflow" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#an-example-workflow-of-package-tdapseudotime" class="anchor"></a>An example workflow of package tdapseudotime</h1></div>
+<a href="#an-example-workflow" class="anchor"></a>An example workflow</h1></div>
+<p>The {tdapseudotime} <span class="emoji" data-emoji="package">📦</span> contains functions to implement the temporal phenotyping via topological data analysis.</p>
 <p>You can install the development version of tdapseudotime from GitHub with remotes:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="co"># install.packages('remotes') # uncomment to install devtools</span>
@@ -129,9 +132,8 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">covid_id</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>first_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">day</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
-    id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span>,
-    time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">day</span> <span class="op">-</span> <span class="va">first_date</span>, units <span class="op">=</span> <span class="st">'days'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span>,
+         time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">day</span> <span class="op">-</span> <span class="va">first_date</span>, units <span class="op">=</span> <span class="st">'days'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">covid_id</span>, <span class="va">time</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">lab_value_names</span><span class="op">)</span>, <span class="va">as.numeric</span><span class="op">)</span></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit">
@@ -140,113 +142,74 @@
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/complete.html">complete</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># prepare for cosine similarity calculation</span></pre></div>
 </div>
-<div id="preparing-for-running-tda-mapper" class="section level2">
+<div id="run-tda-mapper" class="section level2">
 <h2 class="hasAnchor">
-<a href="#preparing-for-running-tda-mapper" class="anchor"></a>Preparing for running TDA Mapper</h2>
-<p>Compute cosine similarity and principal and secondary SVD:</p>
+<a href="#run-tda-mapper" class="anchor"></a>Run TDA Mapper</h2>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="va">cosine_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cosine_sim_func.html">cosine_sim_func</a></span><span class="op">(</span><span class="va">lab_values_mat</span><span class="op">)</span>
-<span class="va">trunc_svds</span> <span class="op">&lt;-</span> <span class="fu">RSpectra</span><span class="fu">::</span><span class="fu">svds</span><span class="op">(</span><span class="va">cosine_sim</span>, k <span class="op">=</span> <span class="fl">2</span>, nu <span class="op">=</span> <span class="fl">2</span>, nv <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="va">svd1</span> <span class="op">&lt;-</span> <span class="op">-</span> <span class="va">trunc_svds</span><span class="op">$</span><span class="va">u</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>
-<span class="va">svd2</span> <span class="op">&lt;-</span> <span class="op">-</span> <span class="va">trunc_svds</span><span class="op">$</span><span class="va">u</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></pre></div>
-<p>Uncomment to check cosine similarity values. (Optional)</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co"># hist(apply(cosine_sim, 1, mean))</span>
-<span class="co"># hist(apply(cosine_sim, 1, min))</span></pre></div>
-<p>Enrich topology by any variable. Use ‘time’ for now.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">f_time</span> <span class="op">&lt;-</span> <span class="va">processed_data</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="va">id</span>, val <span class="op">=</span> <span class="va">time</span><span class="op">)</span> <span class="co"># or val = CRP, etc.</span>
-<span class="co"># hist(as.numeric(f_time$val))</span></pre></div>
-</div>
-<div id="run-function-tda-mapper" class="section level2">
-<h2 class="hasAnchor">
-<a href="#run-function-tda-mapper" class="anchor"></a>Run function TDA Mapper</h2>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">f_sim_map</span> <span class="op">&lt;-</span> <span class="fu">TDAmapper</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TDAmapper/man/mapper2D.html">mapper2D</a></span><span class="op">(</span>
-  distance_matrix <span class="op">=</span> <span class="va">cosine_sim</span>,
-  filter_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">svd1</span> , <span class="va">svd2</span><span class="op">)</span>,
-  num_intervals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">intervals_seq</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span>, <span class="va">intervals_seq</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span><span class="op">)</span>,
-  percent_overlap <span class="op">=</span> <span class="va">overlaps_seq</span><span class="op">[</span><span class="va">p</span><span class="op">]</span>,
-  num_bins_when_clustering <span class="op">=</span> <span class="va">clust_bins</span><span class="op">[</span><span class="va">b</span><span class="op">]</span>
-<span class="op">)</span>
-
-<span class="va">f_graph</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_graph.html">make_graph</a></span><span class="op">(</span><span class="va">f_sim_map</span>, <span class="va">f_time</span>, <span class="st">'clust_color'</span>, <span class="va">my_colors</span><span class="op">)</span></pre></div>
-<p><img src="reference/figures/unnamed-chunk-13-1.png"><!-- --></p>
-<p>Create a minimum spanning tree (MST).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="va">minspantreeweights</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/mst.html">mst</a></span><span class="op">(</span><span class="va">f_graph</span>, weights <span class="op">=</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">clusters</span><span class="op">$</span><span class="va">edge.betweenness</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">minspantreeweights</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span>
-  <span class="st">"topright"</span>,
-  legend <span class="op">=</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">pal</span><span class="op">$</span><span class="va">cluster</span>,
-  col <span class="op">=</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">pal</span><span class="op">$</span><span class="va">color</span>,
-  fill <span class="op">=</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">pal</span><span class="op">$</span><span class="va">color</span>,
-  horiz <span class="op">=</span> <span class="cn">TRUE</span>,
-  cex <span class="op">=</span> <span class="fl">0.4</span>
+<span class="va">f_sim_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/map_tda.html">map_tda</a></span><span class="op">(</span><span class="va">lab_values_mat</span><span class="op">)</span>
+<span class="va">f_graph</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_tda_graph.html">make_tda_graph</a></span><span class="op">(</span>
+  <span class="va">f_sim_map</span>, 
+  data <span class="op">=</span> <span class="va">processed_data</span>, 
+  enrich_var <span class="op">=</span> <span class="st">'time'</span>, <span class="co"># enrich topology by time for now</span>
+  color_method <span class="op">=</span> <span class="st">'clust_color'</span>,
+  my_colors <span class="op">=</span> <span class="va">my_colors</span>
 <span class="op">)</span></pre></div>
-<p><img src="reference/figures/unnamed-chunk-15-1.png"><!-- --></p>
-<div id="this-step-need-manual-review" class="section level3">
-<h3 class="hasAnchor">
-<a href="#this-step-need-manual-review" class="anchor"></a>THIS STEP NEED MANUAL REVIEW</h3>
-<p>Check the MST plot and TIME boxplots.</p>
-<p>Compute trajectories and assign observations to nodes in network.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="va">out_trajectories</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/find_trajectories.html">find_trajectories</a></span><span class="op">(</span>
-  <span class="va">minspantreeweights</span>, <span class="va">processed_data</span>, <span class="va">f_sim_map</span>, <span class="va">f_graph</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">##                                     trajElmnts clusterTraj</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="co">## 1                    3 2 1 7 13 14 15 16 17 18         1&gt;2</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="co">## 2                                 4 5 11 12 18           2</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="co">## 3                                      6 12 18           2</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a><span class="co">## 4                              8 9 10 16 17 18         1&gt;2</span></span>
-<span id="cb13-6"><a href="#cb13-6"></a><span class="co">## 5          20 19 25 31 32 33 34 35 36 30 24 18       3&gt;4&gt;2</span></span>
-<span id="cb13-7"><a href="#cb13-7"></a><span class="co">## 6       21 27 26 25 31 32 33 34 35 36 30 24 18       3&gt;4&gt;2</span></span>
-<span id="cb13-8"><a href="#cb13-8"></a><span class="co">## 7 23 22 28 27 26 25 31 32 33 34 35 36 30 24 18     4&gt;3&gt;4&gt;2</span></span>
-<span id="cb13-9"><a href="#cb13-9"></a><span class="co">## 8    29 28 27 26 25 31 32 33 34 35 36 30 24 18     4&gt;3&gt;4&gt;2</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit">
+<p><img src="reference/figures/unnamed-chunk-8-1.png"><!-- --></p>
+</div>
+<div id="create-a-minimum-spanning-tree" class="section level2">
+<h2 class="hasAnchor">
+<a href="#create-a-minimum-spanning-tree" class="anchor"></a>Create a minimum spanning tree</h2>
+<p>and compute trajectories and assign observations to nodes in network ### THIS STEP NEED MANUAL REVIEW Check the MST plot and TIME boxplots</p>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="va">out_trajectories</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/find_trajectories.html">find_trajectories</a></span><span class="op">(</span><span class="va">processed_data</span>, <span class="va">f_sim_map</span>, <span class="va">f_graph</span><span class="op">)</span></pre></div>
+<p><img src="reference/figures/unnamed-chunk-9-1.png"><!-- --></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">##                                     trajElmnts clusterTraj</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">## 1                    3 2 1 7 13 14 15 16 17 18         1&gt;2</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">## 2                                 4 5 11 12 18           2</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">## 3                                      6 12 18           2</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">## 4                              8 9 10 16 17 18         1&gt;2</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co">## 5          20 19 25 31 32 33 34 35 36 30 24 18       3&gt;4&gt;2</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co">## 6       21 27 26 25 31 32 33 34 35 36 30 24 18       3&gt;4&gt;2</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">## 7 23 22 28 27 26 25 31 32 33 34 35 36 30 24 18     4&gt;3&gt;4&gt;2</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co">## 8    29 28 27 26 25 31 32 33 34 35 36 30 24 18     4&gt;3&gt;4&gt;2</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="va">similarity_df</span> <span class="op">&lt;-</span> <span class="va">out_trajectories</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
-<span class="va">id_node_cluster</span> <span class="op">&lt;-</span> <span class="va">out_trajectories</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="va">id_node_cluster</span> <span class="op">&lt;-</span> <span class="va">out_trajectories</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>
 <span class="va">most_similar_traj</span> <span class="op">&lt;-</span> <span class="va">similarity_df</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">covid_id</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">JW</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># use Jaccard similarity for now</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>trajNumbManual <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
-    <span class="va">trajNumb</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span> <span class="op">~</span> <span class="st">"R&gt;B"</span>,
-    <span class="va">trajNumb</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="st">"B"</span>,
-    <span class="va">trajNumb</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">6</span> <span class="op">)</span> <span class="op">~</span> <span class="st">"G&gt;P&gt;B"</span>,
-    <span class="va">trajNumb</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">8</span> <span class="op">)</span> <span class="op">~</span> <span class="st">"P&gt;G&gt;P&gt;B"</span>,
-    <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">""</span>
-  <span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">SJ</span><span class="op">)</span><span class="op">)</span> <span class="co"># use Jaccard similarity</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">most_similar_traj</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">## # A tibble: 6 x 12</span></span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="co">## # Groups:   covid_id [6]</span></span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="co">##   covid_id trajPaz trajPazclusters trajNumb trajElmnts trajLenght    SJ    SI</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a><span class="co">##   &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="co">## 1 1        26 27 … 3 4                    7 23 22 28 …         15 0.4   1    </span></span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="co">## 2 10       20 21 … 3 4 1 2                7 23 22 28 …         15 0.381 0.242</span></span>
-<span id="cb16-7"><a href="#cb16-7"></a><span class="co">## 3 100      23 24 … 4 1 3                  8 29 28 27 …         14 0.524 0.611</span></span>
-<span id="cb16-8"><a href="#cb16-8"></a><span class="co">## 4 101      13 14 … 1 3 2 4                7 23 22 28 …         15 0.424 0.117</span></span>
-<span id="cb16-9"><a href="#cb16-9"></a><span class="co">## 5 102      9 10 1… 1 2 3 4                7 23 22 28 …         15 0.267 0.229</span></span>
-<span id="cb16-10"><a href="#cb16-10"></a><span class="co">## 6 103      20 21 … 3 4 1 2                7 23 22 28 …         15 0.519 0.275</span></span>
-<span id="cb16-11"><a href="#cb16-11"></a><span class="co">## # … with 4 more variables: SL &lt;dbl&gt;, JW &lt;dbl&gt;, clusterTraj &lt;chr&gt;,</span></span>
-<span id="cb16-12"><a href="#cb16-12"></a><span class="co">## #   trajNumbManual &lt;chr&gt;</span></span></code></pre></div>
-</div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">most_similar_traj</span>, <span class="fl">10</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">## # A tibble: 10 x 11</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="co">## # Groups:   covid_id [10]</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="co">##    covid_id trajPaz trajPazclusters trajNumb trajElmnts trajLenght    SJ    SI</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co">##    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="co">##  1 1        26 27 … 3 4                    8 29 28 27 …         14 0.429 1    </span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="co">##  2 10       20 21 … 3 4 1 2                7 23 22 28 …         15 0.381 0.242</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="co">##  3 100      23 24 … 4 1 3                  8 29 28 27 …         14 0.524 0.611</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="co">##  4 101      13 14 … 1 3 2 4                7 23 22 28 …         15 0.424 0.117</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="co">##  5 102      9 10 1… 1 2 3 4                8 29 28 27 …         14 0.276 0.229</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="co">##  6 103      20 21 … 3 4 1 2                7 23 22 28 …         15 0.519 0.275</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="co">##  7 104      3 4 5 … 1 2 3 4                8 29 28 27 …         14 0.261 0.333</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="co">##  8 105      4 5 6 … 2 3 1 4                7 23 22 28 …         15 0.333 0.297</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="co">##  9 106      14 15 … 1 2 3 4                1 3 2 1 7 1…         10 0.28  0.163</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="co">## 10 107      27 28 … 3 4                    8 29 28 27 …         14 0.429 0.5  </span></span>
+<span id="cb11-15"><a href="#cb11-15"></a><span class="co">## # … with 3 more variables: SL &lt;dbl&gt;, JW &lt;dbl&gt;, clusterTraj &lt;chr&gt;</span></span></code></pre></div>
 </div>
 <div id="write-output" class="section level2">
 <h2 class="hasAnchor">
 <a href="#write-output" class="anchor"></a>Write output</h2>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="va">data_out</span> <span class="op">&lt;-</span> <span class="va">most_similar_traj</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">covid_id</span>, <span class="va">trajNumbManual</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">data_out</span><span class="op">$</span><span class="va">trajNumbManual</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">## </span></span>
-<span id="cb18-2"><a href="#cb18-2"></a><span class="co">##       B   G&gt;P&gt;B P&gt;G&gt;P&gt;B     R&gt;B </span></span>
-<span id="cb18-3"><a href="#cb18-3"></a><span class="co">##      33     110     310      95</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="va">data_out</span> <span class="op">&lt;-</span> <span class="va">most_similar_traj</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">covid_id</span>, <span class="va">clusterTraj</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">data_out</span><span class="op">$</span><span class="va">clusterTraj</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">## </span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="co">##     1&gt;2       2   3&gt;4&gt;2 4&gt;3&gt;4&gt;2 </span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="co">##     184      17      36     311</span></span></code></pre></div>
 </div>
 <div id="visualizations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualizations" class="anchor"></a>Visualizations</h2>
-<div class="sourceCode" id="cb19"><pre class="downlit">
+<div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="va">plot_dat</span> <span class="op">&lt;-</span> <span class="va">processed_data</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">id_node_cluster</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">covid_id</span>, <span class="va">id</span>, <span class="va">cluster</span><span class="op">)</span>, 
             by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'id'</span>, <span class="st">'covid_id'</span><span class="op">)</span><span class="op">)</span>
@@ -258,8 +221,8 @@
   <span class="fu">scale_color_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">pal</span><span class="op">$</span><span class="va">color</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span>,
         plot.title <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></pre></div>
-<p><img src="reference/figures/unnamed-chunk-19-1.png"><!-- --></p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
+<p><img src="reference/figures/unnamed-chunk-12-1.png"><!-- --></p>
+<div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="va">plot_dat</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">cluster</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">lab_value_names</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="op">-</span> <span class="va">cluster</span>, names_to <span class="op">=</span> <span class="st">'Lab'</span>, values_to <span class="op">=</span> <span class="st">'lab_value'</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -270,28 +233,24 @@
   <span class="fu">scale_color_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">pal</span><span class="op">$</span><span class="va">color</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">Lab</span>, scales <span class="op">=</span> <span class="st">'free_y'</span><span class="op">)</span></pre></div>
-<p><img src="reference/figures/unnamed-chunk-19-2.png"><!-- --></p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
+<p><img src="reference/figures/unnamed-chunk-12-2.png"><!-- --></p>
+<div class="sourceCode" id="cb16"><pre class="downlit">
 <span class="va">processed_data_traj</span> <span class="op">&lt;-</span> <span class="va">processed_data</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">most_similar_traj</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"covid_id"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>trajNumbManual <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">trajNumbManual</span><span class="op">)</span>, <span class="va">time</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">trajNumbManual</span>, <span class="va">lab_value_names</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>clusterTraj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">clusterTraj</span><span class="op">)</span>, <span class="va">time</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">clusterTraj</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">lab_value_names</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">## Note: Using an external vector in selections is ambiguous.</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a><span class="co">## ℹ Use `all_of(lab_value_names)` instead of `lab_value_names` to silence this message.</span></span>
-<span id="cb22-3"><a href="#cb22-3"></a><span class="co">## ℹ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a><span class="co">## This message is displayed once per session.</span></span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="downlit">
+<div class="sourceCode" id="cb17"><pre class="downlit">
 <span class="va">processed_data_traj</span>  <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">trajNumbManual</span><span class="op">)</span>, 
-                      names_to <span class="op">=</span> <span class="st">'Lab'</span>, values_to <span class="op">=</span> <span class="st">'lab_value'</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">lab_value</span>, colour <span class="op">=</span> <span class="va">trajNumbManual</span>, 
-             group <span class="op">=</span> <span class="va">trajNumbManual</span>, fill <span class="op">=</span> <span class="va">trajNumbManual</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">clusterTraj</span><span class="op">)</span>, 
+               names_to <span class="op">=</span> <span class="st">'Lab'</span>, values_to <span class="op">=</span> <span class="st">'lab_value'</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">lab_value</span>, colour <span class="op">=</span> <span class="va">clusterTraj</span>, 
+             group <span class="op">=</span> <span class="va">clusterTraj</span>, fill <span class="op">=</span> <span class="va">clusterTraj</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"loess"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">Lab</span>, scales <span class="op">=</span> <span class="st">'free_y'</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co">## `geom_smooth()` using formula 'y ~ x'</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-20-1.png"><!-- --></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">## `geom_smooth()` using formula 'y ~ x'</span></span></code></pre></div>
+<p><img src="reference/figures/unnamed-chunk-13-1.png"><!-- --></p>
 <p>Please <a href="https://github.com/trang1618/tdapseudotime/issues/new">open an issue</a> for questions related to <strong>tdapseudotime</strong> usage, bug reports or general inquiries.</p>
 <p>Thank you very much for your support!</p>
 </div>

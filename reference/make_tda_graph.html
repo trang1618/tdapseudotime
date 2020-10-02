@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Adjust colors of nodes using enrichment function. — color_vertex • tdapseudotime</title>
+<title>Make igraph object by calculating adjacency, resizing nodes,
+weighting edges and color nodes. — make_tda_graph • tdapseudotime</title>
 
 
 <!-- jquery -->
@@ -39,8 +40,10 @@
 
 
 
-<meta property="og:title" content="Adjust colors of nodes using enrichment function. — color_vertex" />
-<meta property="og:description" content="Adjust colors of nodes using enrichment function." />
+<meta property="og:title" content="Make igraph object by calculating adjacency, resizing nodes,
+weighting edges and color nodes. — make_tda_graph" />
+<meta property="og:description" content="Make igraph object by calculating adjacency, resizing nodes,
+weighting edges and color nodes." />
 <meta property="og:image" content="https://trang1618.github.io/tdapseudotime/reference/figures/card.png" />
 <meta property="og:image:alt" content="treeheatr" />
 <meta name="twitter:card" content="summary" />
@@ -119,16 +122,24 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Adjust colors of nodes using enrichment function.</h1>
+    <h1>Make igraph object by calculating adjacency, resizing nodes,
+weighting edges and color nodes.</h1>
     
-    <div class="hidden name"><code>color_vertex.Rd</code></div>
+    <div class="hidden name"><code>make_tda_graph.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Adjust colors of nodes using enrichment function.</p>
+    <p>Make igraph object by calculating adjacency, resizing nodes,
+weighting edges and color nodes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>color_vertex</span><span class='op'>(</span><span class='va'>f_sim_map</span>, <span class='va'>f_time</span>, <span class='va'>my_colors</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_tda_graph</span><span class='op'>(</span>
+  <span class='va'>f_sim_map</span>,
+  <span class='va'>data</span>,
+  <span class='va'>enrich_var</span>,
+  color_method <span class='op'>=</span> <span class='st'>"clust_color"</span>,
+  my_colors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#00A3DD"</span>, <span class='st'>"#60C659"</span>, <span class='st'>"#FFBC21"</span>, <span class='st'>"#FF7F1E"</span>, <span class='st'>"#EF2B2D"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,9 +149,18 @@
       <td><p>TDAmapper object</p></td>
     </tr>
     <tr>
-      <th>f_time</th>
-      <td><p>Data frame of the original data but
-with only two columns: ID and val (time)</p></td>
+      <th>data</th>
+      <td><p>Processe data frame of the original data.</p></td>
+    </tr>
+    <tr>
+      <th>enrich_var</th>
+      <td><p>Character string of enrichment variable.
+Any column name of the processed data frame.</p></td>
+    </tr>
+    <tr>
+      <th>color_method</th>
+      <td><p>Character string specifying the coloring method.
+Can be 'basic', 'clust_shade' or 'clust_color'.</p></td>
     </tr>
     <tr>
       <th>my_colors</th>
@@ -151,8 +171,21 @@ color palette for enrichment.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Data frame of vertex ids and colors.</p>
+    <p>igraph object of the graph output.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>my_tda</span> <span class='op'>&lt;-</span> <span class='fu'><a href='map_tda.html'>map_tda</a></span><span class='op'>(</span><span class='va'>scaled_lab_mat</span><span class='op'>)</span>
+<span class='fu'>make_tda_graph</span><span class='op'>(</span><span class='va'>my_tda</span>, <span class='va'>sim_dat</span>, <span class='st'>'time'</span><span class='op'>)</span>
+</div><div class='img'><img src='make_tda_graph-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; IGRAPH 8d9964b U-W- 26 41 -- 
+#&gt; + attr: node_color (g/x), clusters (g/x), pal (g/x), size (v/n), color
+#&gt; | (v/c), weight (e/n)
+#&gt; + edges from 8d9964b:
+#&gt;  [1]  1-- 2  1-- 6  2-- 3  2-- 7  3-- 4  3-- 8  4-- 5  4-- 9  5--10  6-- 7
+#&gt; [11]  6--11  7-- 8  7--12  8-- 9  8--13  9--10  9--14 10--15 11--12 11--16
+#&gt; [21] 12--13 12--17 13--14 13--18 14--15 14--19 15--20 16--17 16--21 17--18
+#&gt; [31] 17--22 18--19 18--23 19--20 19--24 20--25 21--22 22--23 23--24 24--25
+#&gt; [41] 24--26</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
