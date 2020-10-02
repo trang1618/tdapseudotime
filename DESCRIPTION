@@ -4,7 +4,9 @@ Title: Temporal Phenotyping via Topological Data Analysis and Pseudo Time
 Version: 0.1.0
 Authors@R: c(
     person("Trang", "Le", email = "grixor@gmail.com", role = c("aut", "cre"), comment = "https://trang.page/"),
-    person("Arianna", "Dagliati", email = "arianna.dagliati@unipv.it", role = "aut"))
+    person("Arianna", "Dagliati", email = "arianna.dagliati@unipv.it", role = "aut"),
+    person("Nophar", "Geifman", email = "nophar.geifman@manchester.ac.uk", role = "ctb"),
+    person("Allan", "Tucker", email = "Allan.Tucker@brunel.ac.uk", role = "ctb"))
 Description: This package contains functions to run the temporal phenotyping via topological data analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
