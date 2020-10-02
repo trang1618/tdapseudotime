@@ -3,9 +3,12 @@ template:
   params:
     bootswatch: simplex
   opengraph:
+    image:
+      src: https://trang1618.github.io/tdapseudotime/reference/figures/card.png
+      alt: "treeheatr"
     twitter:
       creator: "@trang1618"
-      card: summary_large_image
+      card: summary
 navbar:
   structure:
     left:  [home, reference, articles]
