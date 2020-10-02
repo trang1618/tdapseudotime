@@ -6,9 +6,7 @@
 #' @import TDAmapper
 #' @importFrom igraph V E mst edge.betweenness.community betweenness graph.adjacency
 #' @return Dataframe of id, node and covid_id.
-#' @export
 #'
-#' @examples
 convert_id_to_node <- function(f_sim_map, processed_data) {
   rowid_to_nodes <- f_sim_map$points_in_vertex
   if (is.null(names(rowid_to_nodes)))
@@ -27,7 +25,6 @@ convert_id_to_node <- function(f_sim_map, processed_data) {
 #' Find trajectories in the MST
 #' All the trajectory or choose the nodes.
 #'
-#' @param minspantreeweights Output from igraph::mst.
 #' @param processed_data Dataframe. Processed from original data.
 #' @param f_sim_map TDAmapper object.
 #' @param f_graph igraph object, out put from graph.adjacency.
@@ -36,7 +33,14 @@ convert_id_to_node <- function(f_sim_map, processed_data) {
 #' @export
 #'
 #' @examples
-find_trajectories <- function(minspantreeweights, processed_data, f_sim_map, f_graph) {
+#' my_tda <- map_tda(scaled_lab_mat)
+#' my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
+#' my_trajs <- find_trajectories(sim_dat, my_tda, my_graph)
+#' head(my_trajs[[1]])
+#' head(my_trajs[[2]])
+#'
+find_trajectories <- function(processed_data, f_sim_map, f_graph) {
+  minspantreeweights <- minspantree(f_graph)
   mst_between <- betweenness(minspantreeweights)
   starting_nodes <- V(minspantreeweights)[mst_between == min(mst_between)]
   ending_nodes <- V(minspantreeweights)[mst_between == max(mst_between)]
@@ -59,9 +63,7 @@ find_trajectories <- function(minspantreeweights, processed_data, f_sim_map, f_g
 #' @param verbose Boolean. Whether to print trajectory.
 #'
 #' @return Dataframe with different similarity measures
-#' @export
 #'
-#' @examples
 compute_similarity <- function(
   processed_data, f_sim_map, f_graph, trajectories, verbose = TRUE) {
 
@@ -126,9 +128,7 @@ compute_similarity <- function(
 #'
 #' @return Dataframe of trajectory elements (trajElmnts)
 #' and cluster trajectory (traj_cluster).
-#' @export
 #'
-#' @examples
 add_clust_info <- function(f_graph, trajectories) {
 
   #Add info about clusters

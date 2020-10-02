@@ -18,7 +18,7 @@ color_graph(
 \item{f_graph}{igraph object, out put from graph.adjacency}
 
 \item{f_time}{Data frame of the original data but
-with only two columns: ID and val (time)}
+with only two columns: ID and val (e.g., time)}
 
 \item{my_colors}{Character vector of hex values specifying
 color palette for enrichment.}

@@ -1,10 +1,46 @@
+#' Run TDAMapper on a matrix of lab values
+#'
+#' @param lab_values_mat Matrix of (imputed) lab values.
+#' @param \dots Arguments to pass to TDAMapper()
+#'
+#' @return TDAMapper object which is a list of items named \code{adjacency}
+#' (adjacency matrix for the edges), \code{num_vertices} (integer number of vertices),
+#' \code{level_of_vertex} (vector with \code{level_of_vertex[i]} = index of
+#' the level set for vertex i), \code{points_in_vertex} (list with
+#' \code{points_in_vertex[[i]]} = vector of indices of points in vertex i),
+#' \code{points_in_level} (list with \code{points_in_level[[i]]} = vector of indices
+#' of points in level set i, and \code{vertices_in_level} (list with
+#' \code{vertices_in_level[[i]]} = vector of indices of vertices in level set i.
+#'
+#' @export
+#'
+#' @examples
+#' my_tda <- map_tda(scaled_lab_mat)
+#' str(my_tda, max.lev = 1)
+map_tda <- function(lab_values_mat, ...){
+  # Preparing for running TDA Mapper
+  # Compute cosine similarity and principal and secondary SVD
+  cosine_sim <- cosine_sim_func(lab_values_mat)
+  trunc_svds <- RSpectra::svds(cosine_sim, k = 2, nu = 2, nv = 2)
+  svd1 <- - trunc_svds$u[, 1]
+  svd2 <- - trunc_svds$u[, 2]
+
+  f_sim_map <- TDAmapper::mapper2D(
+    distance_matrix = cosine_sim,
+    filter_values = list(svd1 , svd2),
+    ...
+  )
+
+  f_sim_map
+}
+
 #' Make igraph object by calculating adjacency, resizing nodes,
 #' weighting edges and color nodes.
 #'
 #' @param f_sim_map TDAmapper object
-#' @param f_time Dataframe of id and enrichment variable.
-#' Default is time (performing time enrichment).
-#' However, f_time can contain any other variable.
+#' @param data Processe data frame of the original data.
+#' @param enrich_var Character string of enrichment variable.
+#' Any column name of the processed data frame.
 #' @param color_method Character string specifying the coloring method.
 #' Can be 'basic', 'clust_shade' or 'clust_color'.
 #' @param my_colors Character vector of hex values specifying
@@ -15,8 +51,13 @@
 #' @export
 #'
 #' @examples
-make_graph <- function(f_sim_map, f_time, color_method = 'clust_color',
-                       my_colors = c("#00A3DD", "#60C659", "#FFBC21", "#FF7F1E", "#EF2B2D")) {
+#' my_tda <- map_tda(scaled_lab_mat)
+#' make_tda_graph(my_tda, sim_dat, 'time')
+#'
+make_tda_graph <- function(
+  f_sim_map, data, enrich_var, color_method = 'clust_color',
+  my_colors = c("#00A3DD", "#60C659", "#FFBC21", "#FF7F1E", "#EF2B2D")) {
+  f_time <- data[, c('id', enrich_var)] %>% `colnames<-`(c('ID', 'val'))
   f_graph <- igraph::graph.adjacency(f_sim_map$adjacency, mode = "undirected")
   f_graph <- resize_nodes(f_sim_map, f_graph)
   f_graph <- weight_edges(f_sim_map, f_graph, f_time)
@@ -24,12 +65,32 @@ make_graph <- function(f_sim_map, f_time, color_method = 'clust_color',
   f_graph
 }
 
+#' Get minimum spanning tree from graph
+#'
+#' @param f_graph igraph object, out put from graph.adjacency
+#'
+#' @return igraph object representing the minimumspanningtree
+#'
+minspantree <- function(f_graph){
+  tree <- igraph::mst(f_graph, weights = f_graph$clusters$edge.betweenness)
+  plot(tree)
+  graphics::legend(
+    "topright",
+    legend = f_graph$pal$cluster,
+    col = f_graph$pal$color,
+    fill = f_graph$pal$color,
+    horiz = TRUE,
+    cex = 0.4
+  )
+  tree
+}
+
 #' Color nodes of graph given coloring method.
 #'
 #' @param f_sim_map TDAmapper object
 #' @param f_graph igraph object, out put from graph.adjacency
 #' @param f_time Data frame of the original data but
-#' with only two columns: ID and val (time)
+#' with only two columns: ID and val (e.g., time)
 #' @param method Character string specifying the coloring method.
 #' Can be 'basic', 'clust_shade' or 'clust_color'.
 #' @param my_colors Character vector of hex values specifying
@@ -37,9 +98,7 @@ make_graph <- function(f_sim_map, f_time, color_method = 'clust_color',
 #'
 #' @importFrom igraph V
 #' @return Modified graph with colors at nodes.
-#' @export
 #'
-#' @examples
 color_graph <- function(
   f_sim_map, f_graph, f_time, my_colors,
   method = c('basic', 'clust_shade', 'clust_color')) {
@@ -87,9 +146,7 @@ color_graph <- function(
 #' @param add Scalar as an additive size rescale parameter.
 #'
 #' @return An igraph object of the modified f_graph.
-#' @export
 #'
-#' @examples
 resize_nodes <- function(f_sim_map, f_graph, mult = 6, add = 8){
   n_vertices <- f_sim_map$num_vertices
   vertex.size <- vector('numeric', n_vertices)
@@ -111,9 +168,7 @@ resize_nodes <- function(f_sim_map, f_graph, mult = 6, add = 8){
 #' with only two columns: ID and val (time)
 #'
 #' @return An igraph object of the modified f_graph.
-#' @export
 #'
-#' @examples
 weight_edges <- function(f_sim_map, f_graph, f_time){
   n_edges <- length(igraph::E(f_graph))
 
@@ -142,9 +197,7 @@ weight_edges <- function(f_sim_map, f_graph, f_time){
 #' color palette for enrichment.
 #'
 #' @return Data frame of vertex ids and colors.
-#' @export
 #'
-#' @examples
 color_vertex <- function(f_sim_map, f_time, my_colors){
   colfunc <- grDevices::colorRampPalette(my_colors)
   y.mean.vertex <- list()
@@ -176,9 +229,7 @@ color_vertex <- function(f_sim_map, f_time, my_colors){
 #' @param \dots Additional arguments to pass to igraph::edge.betweenness.community.
 #'
 #' @return Community clusters from igraph.
-#' @export
 #'
-#' @examples
 commu_clus <- function(f_graph, directed = FALSE, bridges = TRUE, ...){
   igraph::edge.betweenness.community(
     f_graph,
@@ -196,9 +247,7 @@ commu_clus <- function(f_graph, directed = FALSE, bridges = TRUE, ...){
 #'
 #' @return Data frame of nodes and corresponding colors
 #' based on the cluster each node belongs.
-#' @export
 #'
-#' @examples
 color_clust <- function(f_sim_map, my_clusters) {
   cluster_vec <- as.factor(unique(my_clusters$membership))
   # Make a palette of cluster colors

@@ -76,9 +76,7 @@ sim_length  <- function(x, y) {
 #' @param mst_weights Output from igraph::mst.
 #'
 #' @return Vector of node ids of shortest paths.
-#' @export
 #'
-#' @examples
 shortest_paths_func <- function(x, mst_weights){
   igraph::all_shortest_paths(
     mst_weights,

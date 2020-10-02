@@ -5,11 +5,9 @@
 \title{Find trajectories in the MST
 All the trajectory or choose the nodes.}
 \usage{
-find_trajectories(minspantreeweights, processed_data, f_sim_map, f_graph)
+find_trajectories(processed_data, f_sim_map, f_graph)
 }
 \arguments{
-\item{minspantreeweights}{Output from igraph::mst.}
-
 \item{processed_data}{Dataframe. Processed from original data.}
 
 \item{f_sim_map}{TDAmapper object.}
@@ -22,4 +20,10 @@ Dataframe with different similarity measures
 \description{
 Find trajectories in the MST
 All the trajectory or choose the nodes.
+}
+\examples{
+my_tda <- map_tda(scaled_lab_mat)
+my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
+find_trajectories(sim_dat, my_tda, my_graph)
+
 }
