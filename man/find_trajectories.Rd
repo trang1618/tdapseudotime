@@ -24,6 +24,8 @@ All the trajectory or choose the nodes.
 \examples{
 my_tda <- map_tda(scaled_lab_mat)
 my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
-find_trajectories(sim_dat, my_tda, my_graph)
+my_trajs <- find_trajectories(sim_dat, my_tda, my_graph)
+head(my_trajs[[1]])
+head(my_trajs[[2]])
 
 }

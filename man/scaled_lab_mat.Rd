@@ -5,7 +5,7 @@
 \alias{scaled_lab_mat}
 \title{Matrix of the scaled lab values of \code{sim_dat}.}
 \format{
-An object of class \code{matrix} (inherits from \code{array}) with 200 rows and 16 columns.
+An object of class \code{matrix} (inherits from \code{array}) with 400 rows and 16 columns.
 }
 \usage{
 scaled_lab_mat

@@ -3,6 +3,7 @@
 export("%>%")
 export(cosine_sim_func)
 export(find_trajectories)
+export(get_graph_properties)
 export(make_tda_graph)
 export(map_tda)
 export(sim_intersection)

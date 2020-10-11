@@ -110,6 +110,36 @@ f_graph <- make_tda_graph(
 )
 ```
 
+```{r include=FALSE, eval=FALSE}
+intervals_seq <- seq(5, 10, 1)
+overlaps_seq <- seq(50, 60, 10)
+clust_bins <- c(6, 8, 10)
+graph_grid <- list()
+i <- 0
+for (ii in seq_along(intervals_seq)){
+  for (p in seq_along(overlaps_seq)){
+    for (b in seq_along(clust_bins)){
+      i <- i + 1
+      intervals <- intervals_seq[ii]
+      overlaps <- overlaps_seq[p]
+      clusts <- clust_bins[b]
+      
+      f_sim_map <- map_tda(lab_values_mat,
+                     num_intervals = c(intervals, intervals),
+                     percent_overlap = overlaps,
+                     num_bins_when_clustering = clusts)
+      f_graph <- graph.adjacency(f_sim_map$adjacency, mode = "undirected")
+      
+      graph_grid[[i]] <- c(intervals = intervals, overlaps = overlaps, 
+                           clust_bins = clusts, 
+                           get_graph_properties(f_graph))
+    }
+  }
+}
+graph_grid <- do.call("rbind", graph_grid)
+
+```
+
 ## Create a minimum spanning tree
 and compute trajectories and assign observations to nodes in network
 ### THIS STEP NEED MANUAL REVIEW 

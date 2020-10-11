@@ -9,7 +9,7 @@ color_graph(
   f_graph,
   f_time,
   my_colors,
-  method = c("basic", "clust_shade", "clust_color")
+  method = c("basic", "clust_shade", "clust_color", "none")
 )
 }
 \arguments{

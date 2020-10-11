@@ -85,6 +85,53 @@ minspantree <- function(f_graph){
   tree
 }
 
+
+#' Get basic properties of graph
+#'
+#' @param f_graph igraph object, out put from graph.adjacency
+#' @param f_sim_map Optional TDAmapper object
+#' @param simplified Boolean. If TRUE, return a numeric vectors of
+#' basic properties. If FALSE, return a more comprehensive list of
+#' properties including maximal connected components and
+#' number of elements in each node.
+#'
+#' @return List or numeric vector of different properties including
+#' number of graph components, number of nodes, median degree,
+#' edge density, etc.
+#'
+#' @export
+#'
+#' @examples
+#' my_tda <- map_tda(scaled_lab_mat)
+#' my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
+#' get_graph_properties(my_graph)
+get_graph_properties <- function(f_graph, f_sim_map = NULL, simplified = TRUE){
+  comps <- igraph::components(f_graph) # maximal connected components of a graph
+  out_list <- list(
+    n_comps = length(unique(comps$membership)),
+    # number of nodes
+    n_nodes = length(V(f_graph)),
+    # number of observation in nodes
+    median_degree = stats::median(igraph::degree(f_graph)),
+    edge_density = igraph::edge_density(f_graph),
+    clique_length = length(igraph::cliques(f_graph)),
+    diameter = igraph::diameter(f_graph),
+    mean_distance = igraph::mean_distance(f_graph)
+  )
+  if (simplified){
+    unlist(out_list)
+  } else {
+    if (!is.null(f_sim_map)){
+      n_elements_in_nodes <- sapply(f_sim_map$points_in_vertex, length)
+    } else {
+      n_elements_in_nodes <- NULL
+    }
+    c(out_list,
+      list(comps = comps, n_elements_in_nodes = n_elements_in_nodes))
+  }
+}
+
+
 #' Color nodes of graph given coloring method.
 #'
 #' @param f_sim_map TDAmapper object
@@ -101,11 +148,13 @@ minspantree <- function(f_graph){
 #'
 color_graph <- function(
   f_sim_map, f_graph, f_time, my_colors,
-  method = c('basic', 'clust_shade', 'clust_color')) {
+  method = c('basic', 'clust_shade', 'clust_color', 'none')) {
 
   method <- match.arg(method)
 
-  if (method == 'basic'){
+  if (method == 'none'){
+    plot(f_graph)
+  } else if (method == 'basic'){
     color_map <- color_vertex(f_sim_map, f_time, my_colors)
     igraph::V(f_graph)$color <- color_map$colors
     plot(f_graph)
