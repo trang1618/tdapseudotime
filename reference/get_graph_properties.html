@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Matrix of the scaled lab values of sim_dat. — scaled_lab_mat • tdapseudotime</title>
+<title>Get basic properties of graph — get_graph_properties • tdapseudotime</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Matrix of the scaled lab values of sim_dat. — scaled_lab_mat" />
-<meta property="og:description" content="Matrix of the scaled lab values of sim_dat." />
+<meta property="og:title" content="Get basic properties of graph — get_graph_properties" />
+<meta property="og:description" content="Get basic properties of graph" />
 <meta property="og:image" content="https://trang1618.github.io/tdapseudotime/reference/figures/card.png" />
 <meta property="og:image:alt" content="treeheatr" />
 <meta name="twitter:card" content="summary" />
@@ -119,22 +119,51 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Matrix of the scaled lab values of <code>sim_dat</code>.</h1>
+    <h1>Get basic properties of graph</h1>
     
-    <div class="hidden name"><code>scaled_lab_mat.Rd</code></div>
+    <div class="hidden name"><code>get_graph_properties.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Matrix of the scaled lab values of <code>sim_dat</code>.</p>
+    <p>Get basic properties of graph</p>
     </div>
 
-    <pre class="usage"><span class='va'>scaled_lab_mat</span></pre>
+    <pre class="usage"><span class='fu'>get_graph_properties</span><span class='op'>(</span><span class='va'>f_graph</span>, f_sim_map <span class='op'>=</span> <span class='cn'>NULL</span>, simplified <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>f_graph</th>
+      <td><p>igraph object, out put from graph.adjacency</p></td>
+    </tr>
+    <tr>
+      <th>f_sim_map</th>
+      <td><p>Optional TDAmapper object</p></td>
+    </tr>
+    <tr>
+      <th>simplified</th>
+      <td><p>Boolean. If TRUE, return a numeric vectors of
+basic properties. If FALSE, return a more comprehensive list of
+properties including maximal connected components and
+number of elements in each node.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>matrix</code> (inherits from <code>array</code>) with 400 rows and 16 columns.</p>
+    <p>List or numeric vector of different properties including
+number of graph components, number of nodes, median degree,
+edge density, etc.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>my_tda</span> <span class='op'>&lt;-</span> <span class='fu'><a href='map_tda.html'>map_tda</a></span><span class='op'>(</span><span class='va'>scaled_lab_mat</span><span class='op'>)</span>
+<span class='va'>my_graph</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_tda_graph.html'>make_tda_graph</a></span><span class='op'>(</span><span class='va'>my_tda</span>, <span class='va'>sim_dat</span>, <span class='st'>'time'</span><span class='op'>)</span>
+</div><div class='img'><img src='get_graph_properties-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>get_graph_properties</span><span class='op'>(</span><span class='va'>my_graph</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;       n_comps       n_nodes median_degree  edge_density clique_length 
+#&gt;     1.0000000    26.0000000     3.0000000     0.1261538    67.0000000 
+#&gt;      diameter mean_distance 
+#&gt;    44.6005704     3.4153846 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
