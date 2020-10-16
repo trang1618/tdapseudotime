@@ -57,11 +57,12 @@ map_tda <- function(lab_values_mat, ...){
 make_tda_graph <- function(
   f_sim_map, data, enrich_var, color_method = 'clust_color',
   my_colors = c("#00A3DD", "#60C659", "#FFBC21", "#FF7F1E", "#EF2B2D")) {
-  f_time <- data[, c('id', enrich_var)] %>% `colnames<-`(c('ID', 'val'))
+  f_time <- data[, c('id', 'time')] %>% `colnames<-`(c('ID', 'val'))
+  f_enrich <- data[, c('id', enrich_var)] %>% `colnames<-`(c('ID', 'val'))
   f_graph <- igraph::graph.adjacency(f_sim_map$adjacency, mode = "undirected")
   f_graph <- resize_nodes(f_sim_map, f_graph)
   f_graph <- weight_edges(f_sim_map, f_graph, f_time)
-  f_graph <- color_graph(f_sim_map, f_graph, f_time, my_colors, color_method)
+  f_graph <- color_graph(f_sim_map, f_graph, f_enrich, my_colors, color_method)
   f_graph
 }
 
