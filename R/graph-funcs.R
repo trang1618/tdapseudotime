@@ -168,7 +168,7 @@ color_graph <- function(
   } else {
     my_clusters <- commu_clus(f_graph) # community detection
     node_color <- color_clust(f_sim_map, my_clusters)
-    igraph::V(f_graph)$color <- node_color$color
+    igraph::V(f_graph)$color <- as.character(node_color$color)
     pal <- node_color %>% select(- node) %>% distinct()
     plot(f_graph) # plot with assigned palette
     graphics::legend(
