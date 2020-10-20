@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate the pairwise similarity between rows of input matrix — cosine_sim_func • tdapseudotime</title>
+<title>Calculate the pairwise similarity between rows of numeric matrices — cosine_sim_func • tdapseudotime</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Calculate the pairwise similarity between rows of input matrix — cosine_sim_func" />
-<meta property="og:description" content="Calculate the pairwise similarity between rows of input matrix" />
+<meta property="og:title" content="Calculate the pairwise similarity between rows of numeric matrices — cosine_sim_func" />
+<meta property="og:description" content="Calculate the pairwise similarity between rows of numeric matrices" />
 <meta property="og:image" content="https://trang1618.github.io/tdapseudotime/reference/figures/card.png" />
 <meta property="og:image:alt" content="treeheatr" />
 <meta name="twitter:card" content="summary" />
@@ -92,6 +92,7 @@
 <li>
   <a href="../reference/index.html">Documentation</a>
 </li>
+<li class="dropdown-header">Vignettes</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -119,38 +120,47 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate the pairwise similarity between rows of input matrix</h1>
+    <h1>Calculate the pairwise similarity between rows of numeric matrices</h1>
     
     <div class="hidden name"><code>cosine_sim_func.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Calculate the pairwise similarity between rows of input matrix</p>
+    <p>Calculate the pairwise similarity between rows of numeric matrices</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cosine_sim_func</span><span class='op'>(</span><span class='va'>input_mat</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>cosine_sim_func</span><span class='op'>(</span><span class='va'>a</span>, b <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>input_mat</th>
+      <th>a</th>
       <td><p>Input matrix.</p></td>
+    </tr>
+    <tr>
+      <th>b</th>
+      <td><p>Input matrix. Optional.
+If `b` is NULL, use `a`, i.e. similarity between the rows of `a`
+would be computed.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Square matrix of the similarity. Diagonal values should be 1.</p>
+    <p>Matrix of the similarity between the rows of a and
+the rows of b.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, ncol <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># a 4x2 matrix</span>
-<span class='fu'>cosine_sim_func</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='co'># a 4x4 similarity matrix</span>
-</div><div class='output co'>#&gt;           [,1]      [,2]      [,3]      [,4]
-#&gt; [1,] 1.0000000 0.9922779 0.9785498 0.9647638
-#&gt; [2,] 0.9922779 1.0000000 0.9965458 0.9899495
-#&gt; [3,] 0.9785498 0.9965458 1.0000000 0.9982744
-#&gt; [4,] 0.9647638 0.9899495 0.9982744 1.0000000</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, ncol <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span> <span class='co'># a 2x4 matrix</span>
+<span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>9</span><span class='op'>:</span><span class='fl'>16</span>, ncol <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span> <span class='co'># a 2x4 matrix</span>
+<span class='fu'>cosine_sim_func</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;           [,1]      [,2]
+#&gt; [1,] 1.0000000 0.9960238
+#&gt; [2,] 0.9960238 1.0000000</div><div class='input'><span class='fu'>cosine_sim_func</span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>n</span><span class='op'>)</span> <span class='co'># a 4x4 similarity matrix</span>
+</div><div class='output co'>#&gt;           [,1]      [,2]
+#&gt; [1,] 0.9474866 0.9429542
+#&gt; [2,] 0.9722089 0.9688639</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
