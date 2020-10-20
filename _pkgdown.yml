@@ -22,6 +22,7 @@ navbar:
       href: reference/index.html
     articles:
       text: Vignettes
+      href: articles/index.html
     github:
       icon: fa-github
       href: https://github.com/trang1618/tdapseudotime
