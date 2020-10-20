@@ -133,7 +133,7 @@
 
     <pre class="usage"><span class='fu'>compute_similarity</span><span class='op'>(</span>
   <span class='va'>processed_data</span>,
-  <span class='va'>f_graph</span>,
+  <span class='va'>node_color</span>,
   <span class='va'>trajectories</span>,
   f_sim_map <span class='op'>=</span> <span class='cn'>NULL</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
@@ -147,8 +147,8 @@
       <td><p>Dataframe. Processed from original data.</p></td>
     </tr>
     <tr>
-      <th>f_graph</th>
-      <td><p>igraph object, out put from graph.adjacency.</p></td>
+      <th>node_color</th>
+      <td><p>Dataframe mapping node to cluster and corresponding color.</p></td>
     </tr>
     <tr>
       <th>trajectories</th>
@@ -174,7 +174,7 @@ dataframe of the observations mapped to corresponding node and cluster.</p>
     <pre class="examples"><div class='input'><span class='va'>my_tda</span> <span class='op'>&lt;-</span> <span class='fu'><a href='map_tda.html'>map_tda</a></span><span class='op'>(</span><span class='va'>scaled_lab_mat</span><span class='op'>)</span>
 <span class='va'>my_graph</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_tda_graph.html'>make_tda_graph</a></span><span class='op'>(</span><span class='va'>my_tda</span>, <span class='va'>sim_dat</span>, <span class='st'>'time'</span><span class='op'>)</span>
 </div><div class='img'><img src='compute_similarity-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>my_trajs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='find_trajectories.html'>find_trajectories</a></span><span class='op'>(</span><span class='va'>sim_dat</span>, <span class='va'>my_tda</span>, <span class='va'>my_graph</span><span class='op'>)</span>
-</div><div class='img'><img src='compute_similarity-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>compute_similarity</span><span class='op'>(</span><span class='va'>sim_dat</span>, <span class='va'>my_graph</span>, <span class='va'>my_trajs</span>, <span class='va'>my_tda</span><span class='op'>)</span>
+</div><div class='img'><img src='compute_similarity-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>compute_similarity</span><span class='op'>(</span><span class='va'>sim_dat</span>, <span class='va'>my_graph</span><span class='op'>$</span><span class='va'>node_color</span>, <span class='va'>my_trajs</span>, <span class='va'>my_tda</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                trajElmnts clusterTraj
 #&gt; 1    2 1 6 11 16 17 22 23         1&gt;3
 #&gt; 2 3 8 9 10 15 14 19 24 23     1&gt;2&gt;4&gt;3
