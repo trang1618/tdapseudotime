@@ -4,10 +4,10 @@
 \alias{add_clust_info}
 \title{Add cluster information}
 \usage{
-add_clust_info(f_graph, trajectories)
+add_clust_info(node_color, trajectories)
 }
 \arguments{
-\item{f_graph}{igraph object, out put from graph.adjacency}
+\item{node_color}{data frame mapping node to cluster and corresponding color}
 
 \item{trajectories}{List of trajectories computed from shortest paths.}
 }

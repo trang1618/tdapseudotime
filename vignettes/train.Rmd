@@ -1,5 +1,5 @@
 ---
-title: "Establish topology"
+title: "Train: Establish topology"
 author: 'Trang Le'
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
@@ -105,33 +105,34 @@ f_graph <- make_tda_graph(
 )
 ```
 
-```{r include=FALSE, eval=FALSE}
-# intervals_seq <- seq(5, 10, 1)
-# overlaps_seq <- seq(50, 60, 10)
-# clust_bins <- c(6, 8, 10)
-# graph_grid <- list()
-# i <- 0
-# for (ii in seq_along(intervals_seq)){
-#   for (p in seq_along(overlaps_seq)){
-#     for (b in seq_along(clust_bins)){
-#       i <- i + 1
-#       intervals <- intervals_seq[ii]
-#       overlaps <- overlaps_seq[p]
-#       clusts <- clust_bins[b]
-#       
-#       f_sim_map <- map_tda(lab_values_mat,
-#                      num_intervals = c(intervals, intervals),
-#                      percent_overlap = overlaps,
-#                      num_bins_when_clustering = clusts)
-#       f_graph <- graph.adjacency(f_sim_map$adjacency, mode = "undirected")
-#       
-#       graph_grid[[i]] <- c(intervals = intervals, overlaps = overlaps, 
-#                            clust_bins = clusts, 
-#                            get_graph_properties(f_graph))
-#     }
-#   }
-# }
-# graph_grid <- do.call("rbind", graph_grid)
+```{r eval=FALSE}
+intervals_seq <- seq(5, 10, 1)
+overlaps_seq <- seq(50, 60, 10)
+clust_bins <- c(6, 8, 10)
+graph_grid <- list()
+i <- 0
+for (ii in seq_along(intervals_seq)){
+  for (p in seq_along(overlaps_seq)){
+    for (b in seq_along(clust_bins)){
+      i <- i + 1
+      intervals <- intervals_seq[ii]
+      overlaps <- overlaps_seq[p]
+      clusts <- clust_bins[b]
+
+      f_sim_map <- map_tda(lab_values_mat,
+                     num_intervals = c(intervals, intervals),
+                     percent_overlap = overlaps,
+                     num_bins_when_clustering = clusts)
+      f_graph <- graph.adjacency(f_sim_map$adjacency, mode = "undirected")
+
+      graph_grid[[i]] <- c(intervals = intervals, overlaps = overlaps,
+                           clust_bins = clusts,
+                           get_graph_properties(f_graph))
+    }
+  }
+}
+graph_grid <- do.call("rbind", graph_grid)
+
 
 ```
 
@@ -142,7 +143,7 @@ Check the MST plot and TIME boxplots
 
 ```{r}
 out_trajectories <- find_trajectories(processed_data, f_sim_map, f_graph)
-out_list <- compute_similarity(processed_data, f_graph, out_trajectories, f_sim_map)
+out_list <- compute_similarity(processed_data, f_graph$node_color, out_trajectories, f_sim_map)
 ```
 
 ```{r out.width=12}
@@ -160,7 +161,8 @@ centroids <- processed_data[, c('id', 'time', lab_value_names)] %>%
   summarise(across(.fns = mean), .groups = 'drop') %>% 
   select(-id)
 
-# save(centroids, f_graph, out_trajectories, file = '../data/centroids.rda')
+node_color <- f_graph$node_color
+# save(centroids, node_color, out_trajectories, file = '../data/centroids.rda')
 ```
 
 ## Write output
@@ -168,6 +170,16 @@ centroids <- processed_data[, c('id', 'time', lab_value_names)] %>%
 data_out <- most_similar_traj %>% select(covid_id, clusterTraj)
 table(data_out$clusterTraj)
 
+check = data_out %>% 
+  filter(clusterTraj == '3>4>2') %>% 
+  pull(covid_id)
+
+check2 = processed_data %>% 
+filter(covid_id %in% check) %>% 
+count(covid_id) %>% 
+pull(n)
+
+table(check2)
 ```
 
 ## Visualizations

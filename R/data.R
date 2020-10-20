@@ -21,9 +21,9 @@
 #' Output of the training workflow to establish the topology from fake data.
 "centroids"
 
-#' igraph object (from `graph.adjacency`)
+#' Dataframe mapping node to cluster and corresponding color,
 #' output of the training workflow to establish the topology from fake data.
-"f_graph"
+"node_color"
 
 #' List of trajectories computed from shortest paths.
 #' output of the training workflow to establish the topology from fake data.

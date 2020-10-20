@@ -6,7 +6,7 @@
 \usage{
 compute_similarity(
   processed_data,
-  f_graph,
+  node_color,
   trajectories,
   f_sim_map = NULL,
   verbose = TRUE
@@ -15,7 +15,7 @@ compute_similarity(
 \arguments{
 \item{processed_data}{Dataframe. Processed from original data.}
 
-\item{f_graph}{igraph object, out put from graph.adjacency.}
+\item{node_color}{Dataframe mapping node to cluster and corresponding color.}
 
 \item{trajectories}{List of trajectories computed from shortest paths.}
 
@@ -35,6 +35,6 @@ Compute similarity based on trajectory
 my_tda <- map_tda(scaled_lab_mat)
 my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
 my_trajs <- find_trajectories(sim_dat, my_tda, my_graph)
-compute_similarity(sim_dat, my_graph, my_trajs, my_tda)
+compute_similarity(sim_dat, my_graph$node_color, my_trajs, my_tda)
 
 }

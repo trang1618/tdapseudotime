@@ -1,5 +1,5 @@
 ---
-title: "Project test observations onto existing topolgy"
+title: "Test: Project observations onto existing topolgy"
 author: 'Trang Le'
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
@@ -41,6 +41,10 @@ Color palette for enrichment: blue > green > yellow > orange > red
 ```{r}
 # RColorBrewer::brewer.pal(length(unique(CommunityCluster$membership)), "Set1")
 my_colors <- c("#00A3DD", "#60C659", "#FFBC21", "#FF7F1E", "#EF2B2D")
+clust_colors <- node_color %>% 
+  distinct(cluster, color) %>% 
+  arrange(cluster) %>% 
+  pull(color)
 ```
 
 ## Read in data file
@@ -88,7 +92,7 @@ mapped_test <- processed_test %>%
   left_join(id_to_node, by = 'id') %>% 
   arrange(id)
 
-out_test_list <- compute_similarity(mapped_test, f_graph, out_trajectories)
+out_test_list <- compute_similarity(mapped_test, node_color, out_trajectories)
 similarity_test <- out_test_list[[1]]
 id_node_cluster_test <- out_test_list[[2]]
 most_similar_traj_test <- similarity_test %>%
@@ -111,8 +115,8 @@ plot_dat <- processed_test %>%
 plot_dat %>% 
   ggplot(aes(x = cluster, y = time, fill = cluster)) +
   geom_boxplot(alpha = 0.8) + 
-  scale_fill_manual(values = f_graph$pal$color) + 
-  scale_color_manual(values = f_graph$pal$color) +
+  scale_fill_manual(values = clust_colors) + 
+  scale_color_manual(values = clust_colors) +
   theme(legend.position = "none",
         plot.title = element_text(size = 8, hjust = 0.5))
 
@@ -122,8 +126,8 @@ plot_dat %>%
   ggplot(aes(x = cluster, y = lab_value, fill = cluster)) +
   geom_boxplot(alpha = 0.8) + 
   labs(x = NULL, y = NULL) +
-  scale_fill_manual(values = f_graph$pal$color) + 
-  scale_color_manual(values = f_graph$pal$color) +
+  scale_fill_manual(values = clust_colors) + 
+  scale_color_manual(values = clust_colors) +
   theme(legend.position = "none") +
   facet_wrap(~ Lab, scales = 'free_y')
 
@@ -140,6 +144,8 @@ processed_data_traj  %>%
                names_to = 'Lab', values_to = 'lab_value') %>% 
   ggplot(aes(time, lab_value, colour = clusterTraj, 
              group = clusterTraj, fill = clusterTraj)) +
+  scale_fill_manual(values = clust_colors) + 
+  scale_color_manual(values = clust_colors) + 
   geom_smooth(method = "loess") +
   theme(legend.position = "none") +
   facet_wrap(~ Lab, scales = 'free_y')

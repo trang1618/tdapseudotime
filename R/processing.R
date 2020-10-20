@@ -58,7 +58,7 @@ find_trajectories <- function(processed_data, f_sim_map, f_graph) {
 #' Compute similarity based on trajectory
 #'
 #' @param processed_data Dataframe. Processed from original data.
-#' @param f_graph igraph object, out put from graph.adjacency.
+#' @param node_color Dataframe mapping node to cluster and corresponding color.
 #' @param trajectories List of trajectories computed from shortest paths.
 #' @param f_sim_map TDAmapper object
 #' @param verbose Boolean. Whether to print trajectory.
@@ -72,10 +72,10 @@ find_trajectories <- function(processed_data, f_sim_map, f_graph) {
 #' my_tda <- map_tda(scaled_lab_mat)
 #' my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
 #' my_trajs <- find_trajectories(sim_dat, my_tda, my_graph)
-#' compute_similarity(sim_dat, my_graph, my_trajs, my_tda)
+#' compute_similarity(sim_dat, my_graph$node_color, my_trajs, my_tda)
 #'
 compute_similarity <- function(
-  processed_data, f_graph, trajectories, f_sim_map = NULL, verbose = TRUE) {
+  processed_data, node_color, trajectories, f_sim_map = NULL, verbose = TRUE) {
 
   if (!'node' %in% colnames(processed_data)){
     rowid_node_df <- convert_id_to_node(f_sim_map, processed_data)
@@ -84,7 +84,7 @@ compute_similarity <- function(
   }
 
   out_data <- processed_data %>%
-    left_join(f_graph$node_color, by = 'node') %>%
+    left_join(node_color, by = 'node') %>%
     select(covid_id, id, node, cluster) %>%
     distinct()
 
@@ -125,7 +125,7 @@ compute_similarity <- function(
     }
     similarity_ls[[i]] <- bind_rows(temp)
   }
-  traj_clusters <- add_clust_info(f_graph, trajectories)
+  traj_clusters <- add_clust_info(node_color, trajectories)
   if (verbose) print(traj_clusters)
   similarity_df <- bind_rows(similarity_ls) %>%
     left_join(traj_clusters, by = 'trajElmnts')
@@ -137,13 +137,13 @@ compute_similarity <- function(
 
 #' Add cluster information
 #'
-#' @param f_graph igraph object, out put from graph.adjacency
+#' @param node_color data frame mapping node to cluster and corresponding color
 #' @param trajectories List of trajectories computed from shortest paths.
 #'
 #' @return Dataframe of trajectory elements (trajElmnts)
 #' and cluster trajectory (traj_cluster).
 #'
-add_clust_info <- function(f_graph, trajectories) {
+add_clust_info <- function(node_color, trajectories) {
 
   #Add info about clusters
   traj_cluster <- list()
@@ -151,7 +151,7 @@ add_clust_info <- function(f_graph, trajectories) {
     if (length(trajectories[[t]]$res) > 0) {
       traj_res_1 <- trajectories[[t]]$res[[1]]
       temp <- data.frame(node = as.vector(traj_res_1)) %>%
-        left_join(f_graph$node_color, by = 'node')
+        left_join(node_color, by = 'node')
 
       traj_cluster[[t]] <- data.frame(
         trajElmnts = paste(traj_res_1, collapse = " "),
