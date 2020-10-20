@@ -9,13 +9,7 @@ vignette: >
   \usepackage[UTF-8]{inputenc}
 ---
 
-The {tdapseudotime} :package: contains functions to implement the temporal phenotyping via topological data analysis.
-
-You can install the development version of tdapseudotime from GitHub with remotes:
-```{r, eval=FALSE}
-# install.packages('remotes') # uncomment to install devtools
-remotes::install_github('trang1618/tdapseudotime')
-```
+If your site is one of the "test" sites, please use this workflow to project the test observations onto the established topology (by loading `centroids` as shown below).
 
 ```{r setup, message=FALSE, warning=FALSE}
 library(tdapseudotime)

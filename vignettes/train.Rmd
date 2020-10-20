@@ -9,6 +9,8 @@ vignette: >
   \usepackage[UTF-8]{inputenc}
 ---
 
+If your site is one of the "train" sites, please use this workflow to establish the topology and trajectories using the observations at your site.
+
 ## Setting up
 
 ```{r setup, message=FALSE, warning=FALSE}
