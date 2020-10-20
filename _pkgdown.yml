@@ -20,6 +20,13 @@ navbar:
     reference:
       text: Documentation
       href: reference/index.html
+    articles:
+      text: Vignettes
+      - title: TDA workflow
+        navbar: ~
+        contents:
+        - train
+        - test
     github:
       icon: fa-github
       href: https://github.com/trang1618/tdapseudotime

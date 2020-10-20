@@ -11,7 +11,7 @@ Description: This package contains functions to run the temporal phenotyping via
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Depends:
   R (>= 3.5.0)
 Imports:
@@ -25,3 +25,9 @@ Imports:
   grDevices,
   tidyr,
   magrittr
+Suggests:
+  knitr,
+  rmarkdown,
+  mice,
+  ggplot2
+VignetteBuilder: knitr, rmarkdown

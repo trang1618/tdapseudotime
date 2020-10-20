@@ -2,20 +2,27 @@
 % Please edit documentation in R/math-funcs.R
 \name{cosine_sim_func}
 \alias{cosine_sim_func}
-\title{Calculate the pairwise similarity between rows of input matrix}
+\title{Calculate the pairwise similarity between rows of numeric matrices}
 \usage{
-cosine_sim_func(input_mat)
+cosine_sim_func(a, b = NULL)
 }
 \arguments{
-\item{input_mat}{Input matrix.}
+\item{a}{Input matrix.}
+
+\item{b}{Input matrix. Optional.
+If `b` is NULL, use `a`, i.e. similarity between the rows of `a`
+would be computed.}
 }
 \value{
-Square matrix of the similarity. Diagonal values should be 1.
+Matrix of the similarity between the rows of a and
+the rows of b.
 }
 \description{
-Calculate the pairwise similarity between rows of input matrix
+Calculate the pairwise similarity between rows of numeric matrices
 }
 \examples{
-m <- matrix(1:8, ncol = 2) # a 4x2 matrix
-cosine_sim_func(m) # a 4x4 similarity matrix
+m <- matrix(1:8, ncol = 4) # a 2x4 matrix
+n <- matrix(9:16, ncol = 4) # a 2x4 matrix
+cosine_sim_func(m)
+cosine_sim_func(m, n) # a 4x4 similarity matrix
 }

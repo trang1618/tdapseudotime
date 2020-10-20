@@ -1,16 +1,28 @@
-#' Calculate the pairwise similarity between rows of input matrix
+#' Calculate the pairwise similarity between rows of numeric matrices
 #'
-#' @param input_mat Input matrix.
+#' @param a Input matrix.
+#' @param b Input matrix. Optional.
+#' If `b` is NULL, use `a`, i.e. similarity between the rows of `a`
+#' would be computed.
 #'
-#' @return Square matrix of the similarity. Diagonal values should be 1.
+#' @return Matrix of the similarity between the rows of a and
+#' the rows of b.
+#'
 #' @export
 #'
 #' @examples
-#' m <- matrix(1:8, ncol = 2) # a 4x2 matrix
-#' cosine_sim_func(m) # a 4x4 similarity matrix
-cosine_sim_func <- function(input_mat){
-  cosine_sim <- input_mat / sqrt(rowSums(input_mat * input_mat))
-  cosine_sim <- cosine_sim %*% t(cosine_sim)
+#' m <- matrix(1:8, ncol = 4) # a 2x4 matrix
+#' n <- matrix(9:16, ncol = 4) # a 2x4 matrix
+#' cosine_sim_func(m)
+#' cosine_sim_func(m, n) # a 4x4 similarity matrix
+cosine_sim_func <- function(a, b = NULL){
+  a_norm <- a / sqrt(rowSums(a * a))
+  if (is.null(b)){
+    b_norm <- a_norm
+  } else {
+    b_norm <- b / sqrt(rowSums(b * b))
+  }
+  cosine_sim <- a_norm %*% t(b_norm)
   cosine_sim[cosine_sim > 1] <- 1.0
   cosine_sim
 }

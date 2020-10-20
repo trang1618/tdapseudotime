@@ -6,26 +6,35 @@
 \usage{
 compute_similarity(
   processed_data,
-  f_sim_map,
   f_graph,
   trajectories,
+  f_sim_map = NULL,
   verbose = TRUE
 )
 }
 \arguments{
 \item{processed_data}{Dataframe. Processed from original data.}
 
-\item{f_sim_map}{TDAmapper object}
-
 \item{f_graph}{igraph object, out put from graph.adjacency.}
 
 \item{trajectories}{List of trajectories computed from shortest paths.}
 
+\item{f_sim_map}{TDAmapper object}
+
 \item{verbose}{Boolean. Whether to print trajectory.}
 }
 \value{
-Dataframe with different similarity measures
+List of two components:
+dataframe with various similarity measures and
+dataframe of the observations mapped to corresponding node and cluster.
 }
 \description{
 Compute similarity based on trajectory
+}
+\examples{
+my_tda <- map_tda(scaled_lab_mat)
+my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
+my_trajs <- find_trajectories(sim_dat, my_tda, my_graph)
+compute_similarity(sim_dat, my_graph, my_trajs, my_tda)
+
 }

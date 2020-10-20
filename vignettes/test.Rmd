@@ -1,0 +1,152 @@
+---
+title: "Project test observations onto existing topolgy"
+author: 'Trang Le'
+date: '`r Sys.Date()`'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Project test observations onto existing topolgy}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[UTF-8]{inputenc}
+---
+
+The {tdapseudotime} :package: contains functions to implement the temporal phenotyping via topological data analysis.
+
+You can install the development version of tdapseudotime from GitHub with remotes:
+```{r, eval=FALSE}
+# install.packages('remotes') # uncomment to install devtools
+remotes::install_github('trang1618/tdapseudotime')
+```
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tdapseudotime)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+set.seed(1234)
+```
+
+```{r echo=FALSE}
+theme_set(
+  theme_bw() + 
+    theme(
+      panel.grid.minor = element_blank(),
+      legend.title = element_blank()
+    ))
+```
+
+## Preprocess
+
+Parameters:
+```{r}
+my_test <- 'test-data.csv'
+data("centroids", package = 'tdapseudotime')
+```
+
+Color palette for enrichment: blue > green > yellow > orange > red
+```{r}
+# RColorBrewer::brewer.pal(length(unique(CommunityCluster$membership)), "Set1")
+my_colors <- c("#00A3DD", "#60C659", "#FFBC21", "#FF7F1E", "#EF2B2D")
+```
+
+## Read in data file
+and load the data exported from training, `centroids.rda`, which contains 
+`f_graph` (igraph object), `out_trajectories`, and the `centroids` data frame.
+
+```{r}
+test_data <- read.csv(my_test, header = TRUE, colClasses = "character") %>% 
+  rename('covid_id' = patient_num,
+         'time' = days_since_admission)
+non_lab_value_names <- c('id', 'covid_id', 'day')
+lab_value_names <- setdiff(names(test_data), non_lab_value_names)
+
+
+```
+
+## Process data
+
+```{r}
+processed_test <- test_data %>% 
+  group_by(covid_id) %>% 
+  ungroup() %>% 
+  mutate(id = as.integer(id),
+         time = as.numeric(time)) %>% 
+  arrange(covid_id, time) %>% 
+  mutate_at(dplyr::all_of(lab_value_names), as.numeric) %>% 
+  arrange(as.numeric(covid_id), time) %>% 
+  {.}
+```
+
+```{r}
+projection_mat <- cosine_sim_func(
+  processed_test %>% select(- c('id', 'covid_id')) %>% as.matrix(), 
+  as.matrix(select(centroids, - node)))
+
+id_to_node <- data.frame(
+  id = processed_test$id,
+  node = apply(projection_mat, 1, which.max)
+)
+```
+
+```{r}
+mapped_test <- processed_test %>% 
+  select(- any_of(lab_value_names)) %>% 
+  left_join(id_to_node, by = 'id') %>% 
+  arrange(id)
+
+out_test_list <- compute_similarity(mapped_test, f_graph, out_trajectories)
+similarity_test <- out_test_list[[1]]
+id_node_cluster_test <- out_test_list[[2]]
+most_similar_traj_test <- similarity_test %>%
+  group_by(covid_id) %>%
+  slice(which.max(SJ)) # use Jaccard similarity
+
+head(most_similar_traj_test, 10)
+test_out <- most_similar_traj_test %>% select(covid_id, clusterTraj)
+
+table(test_out$clusterTraj)
+```
+
+## Visualizations
+
+```{r}
+plot_dat <- processed_test %>% 
+  left_join(id_node_cluster_test %>% distinct(covid_id, id, cluster), 
+            by = c('id', 'covid_id'))
+
+plot_dat %>% 
+  ggplot(aes(x = cluster, y = time, fill = cluster)) +
+  geom_boxplot(alpha = 0.8) + 
+  scale_fill_manual(values = f_graph$pal$color) + 
+  scale_color_manual(values = f_graph$pal$color) +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 8, hjust = 0.5))
+
+plot_dat %>% 
+  select(cluster, all_of(lab_value_names)) %>% 
+  pivot_longer(- cluster, names_to = 'Lab', values_to = 'lab_value') %>% 
+  ggplot(aes(x = cluster, y = lab_value, fill = cluster)) +
+  geom_boxplot(alpha = 0.8) + 
+  labs(x = NULL, y = NULL) +
+  scale_fill_manual(values = f_graph$pal$color) + 
+  scale_color_manual(values = f_graph$pal$color) +
+  theme(legend.position = "none") +
+  facet_wrap(~ Lab, scales = 'free_y')
+
+processed_data_traj <- processed_test %>% 
+  left_join(most_similar_traj_test, by = c("covid_id")) %>% 
+  mutate(clusterTraj = as.factor(clusterTraj), time) %>%
+  select(time, clusterTraj, all_of(lab_value_names)) %>% 
+  distinct()
+```
+
+```{r fig.width=12, fig.height=8}
+processed_data_traj  %>% 
+  pivot_longer(- c(time, clusterTraj), 
+               names_to = 'Lab', values_to = 'lab_value') %>% 
+  ggplot(aes(time, lab_value, colour = clusterTraj, 
+             group = clusterTraj, fill = clusterTraj)) +
+  geom_smooth(method = "loess") +
+  theme(legend.position = "none") +
+  facet_wrap(~ Lab, scales = 'free_y')
+```

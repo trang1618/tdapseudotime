@@ -12,10 +12,10 @@ find_trajectories(processed_data, f_sim_map, f_graph)
 
 \item{f_sim_map}{TDAmapper object.}
 
-\item{f_graph}{igraph object, out put from graph.adjacency.}
+\item{f_graph}{igraph object, output from graph.adjacency.}
 }
 \value{
-Dataframe with different similarity measures
+List of trajectories computed from shortest paths.
 }
 \description{
 Find trajectories in the MST

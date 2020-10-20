@@ -9,6 +9,7 @@
 #'
 convert_id_to_node <- function(f_sim_map, processed_data) {
   rowid_to_nodes <- f_sim_map$points_in_vertex
+  # print(names(rowid_to_nodes))
   if (is.null(names(rowid_to_nodes)))
     names(rowid_to_nodes) <- seq.int(length(rowid_to_nodes))
   node_reps <- rep(names(rowid_to_nodes), lengths(rowid_to_nodes))
@@ -18,8 +19,7 @@ convert_id_to_node <- function(f_sim_map, processed_data) {
 
   rowid_node_df <- data.frame(
     id = unlist(rowid_to_nodes),
-    node = as.integer(node_reps)) %>%
-    left_join(processed_data %>% select(id, covid_id), by = 'id')
+    node = as.integer(node_reps))
 }
 
 #' Find trajectories in the MST
@@ -27,9 +27,10 @@ convert_id_to_node <- function(f_sim_map, processed_data) {
 #'
 #' @param processed_data Dataframe. Processed from original data.
 #' @param f_sim_map TDAmapper object.
-#' @param f_graph igraph object, out put from graph.adjacency.
+#' @param f_graph igraph object, output from graph.adjacency.
 #'
-#' @return Dataframe with different similarity measures
+#' @return List of trajectories computed from shortest paths.
+#'
 #' @export
 #'
 #' @examples
@@ -51,25 +52,38 @@ find_trajectories <- function(processed_data, f_sim_map, f_graph) {
 
   trajectories <- apply(
     starts_and_ends, 1, shortest_paths_func, mst_weights = minspantreeweights)
-  compute_similarity(processed_data, f_sim_map, f_graph, trajectories)
+  trajectories
 }
 
 #' Compute similarity based on trajectory
 #'
 #' @param processed_data Dataframe. Processed from original data.
-#' @param f_sim_map TDAmapper object
 #' @param f_graph igraph object, out put from graph.adjacency.
 #' @param trajectories List of trajectories computed from shortest paths.
+#' @param f_sim_map TDAmapper object
 #' @param verbose Boolean. Whether to print trajectory.
 #'
-#' @return Dataframe with different similarity measures
+#' @return List of two components:
+#' dataframe with various similarity measures and
+#' dataframe of the observations mapped to corresponding node and cluster.
+#'
+#' @export
+#' @examples
+#' my_tda <- map_tda(scaled_lab_mat)
+#' my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
+#' my_trajs <- find_trajectories(sim_dat, my_tda, my_graph)
+#' compute_similarity(sim_dat, my_graph, my_trajs, my_tda)
 #'
 compute_similarity <- function(
-  processed_data, f_sim_map, f_graph, trajectories, verbose = TRUE) {
+  processed_data, f_graph, trajectories, f_sim_map = NULL, verbose = TRUE) {
 
-  rowid_node_df <- convert_id_to_node(f_sim_map, processed_data)
+  if (!'node' %in% colnames(processed_data)){
+    rowid_node_df <- convert_id_to_node(f_sim_map, processed_data)
+    processed_data <- processed_data %>%
+      left_join(rowid_node_df, by = 'id')
+  }
+
   out_data <- processed_data %>%
-    left_join(rowid_node_df, by = c('id', 'covid_id')) %>%
     left_join(f_graph$node_color, by = 'node') %>%
     select(covid_id, id, node, cluster) %>%
     distinct()
