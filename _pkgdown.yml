@@ -21,8 +21,6 @@ navbar:
       text: Documentation
       href: reference/index.html
     articles:
-      text: Vignettes
-      href: articles/index.html
       workflows:
         - text: 'Train: Establish topology'
           href: articles/train.html
