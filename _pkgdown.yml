@@ -20,12 +20,6 @@ navbar:
     reference:
       text: Documentation
       href: reference/index.html
-    articles:
-      workflows:
-        - text: 'Train: Establish topology'
-          href: articles/train.html
-        - text: 'Test: Project observations onto existing topolgy'
-          href: articles/test.html
     github:
       icon: fa-github
       href: https://github.com/trang1618/tdapseudotime
