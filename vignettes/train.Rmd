@@ -169,17 +169,6 @@ node_color <- f_graph$node_color
 ```{r}
 data_out <- most_similar_traj %>% select(covid_id, clusterTraj)
 table(data_out$clusterTraj)
-
-check = data_out %>% 
-  filter(clusterTraj == '3>4>2') %>% 
-  pull(covid_id)
-
-check2 = processed_data %>% 
-filter(covid_id %in% check) %>% 
-count(covid_id) %>% 
-pull(n)
-
-table(check2)
 ```
 
 ## Visualizations
@@ -221,8 +210,6 @@ processed_data_traj  %>%
                names_to = 'Lab', values_to = 'lab_value') %>% 
   ggplot(aes(time, lab_value, colour = clusterTraj, 
              group = clusterTraj, fill = clusterTraj)) +
-  scale_fill_manual(values = f_graph$pal$color) + 
-  scale_color_manual(values = f_graph$pal$color) + 
   geom_smooth(method = "loess") +
   theme(legend.position = "none") +
   facet_wrap(~ Lab, scales = 'free_y')

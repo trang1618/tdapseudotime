@@ -144,8 +144,6 @@ processed_data_traj  %>%
                names_to = 'Lab', values_to = 'lab_value') %>% 
   ggplot(aes(time, lab_value, colour = clusterTraj, 
              group = clusterTraj, fill = clusterTraj)) +
-  scale_fill_manual(values = clust_colors) + 
-  scale_color_manual(values = clust_colors) + 
   geom_smooth(method = "loess") +
   theme(legend.position = "none") +
   facet_wrap(~ Lab, scales = 'free_y')
