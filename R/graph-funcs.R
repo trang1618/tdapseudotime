@@ -107,6 +107,12 @@ minspantree <- function(f_graph){
 #' my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
 #' get_graph_properties(my_graph)
 get_graph_properties <- function(f_graph, f_sim_map = NULL, simplified = TRUE){
+  if (!is.null(f_sim_map)){
+    n_elements_in_nodes <- sapply(f_sim_map$points_in_vertex, length)
+  } else {
+    n_elements_in_nodes <- NULL
+  }
+
   comps <- igraph::components(f_graph) # maximal connected components of a graph
   out_list <- list(
     n_comps = length(unique(comps$membership)),
@@ -114,6 +120,8 @@ get_graph_properties <- function(f_graph, f_sim_map = NULL, simplified = TRUE){
     n_nodes = length(V(f_graph)),
     # number of observation in nodes
     median_degree = stats::median(igraph::degree(f_graph)),
+    median_betweeness = stats::median(igraph::betweenness(f_graph)),
+    min_elements_per_node = min(n_elements_in_nodes),
     edge_density = igraph::edge_density(f_graph),
     clique_length = length(igraph::cliques(f_graph)),
     diameter = igraph::diameter(f_graph),
@@ -122,11 +130,6 @@ get_graph_properties <- function(f_graph, f_sim_map = NULL, simplified = TRUE){
   if (simplified){
     unlist(out_list)
   } else {
-    if (!is.null(f_sim_map)){
-      n_elements_in_nodes <- sapply(f_sim_map$points_in_vertex, length)
-    } else {
-      n_elements_in_nodes <- NULL
-    }
     c(out_list,
       list(comps = comps, n_elements_in_nodes = n_elements_in_nodes))
   }
