@@ -87,7 +87,7 @@ lab_values_mat <- processed_data[, lab_value_names] %>%
 ## Perform grid search to select a combination of hyperparameters
 The code in this section is optional.
 
-```{r}
+```{r fig.width=9}
 intervals_seq <- seq(3, 11, 1)
 overlaps <- 60
 clusts <- 8
@@ -106,10 +106,10 @@ for (ii in seq_along(intervals_seq)){
                         clust_bins = clusts,
                         get_graph_properties(f_graph, f_sim_map))
 }
-graph_grid <- do.call("rbind", graph_grid)
+graph_grid <- do.call("rbind", graph_grid) %>% 
+  as.data.frame()
 
 graph_grid %>% 
-  as.data.frame() %>%
   select(- overlaps, - clust_bins) %>% 
   pivot_longer(-intervals) %>% 
   ggplot(aes(x = intervals, y = value)) +
@@ -119,7 +119,7 @@ graph_grid %>%
 
 ```
 
-```{r eval=FALSE}
+```{r eval=FALSE, include=FALSE}
 intervals_seq <- seq(3, 11, 1)
 # overlaps_seq <- seq(50, 100, 10)
 # clust_bins <- c(6, 8, 10, 12, 14)
@@ -148,8 +148,7 @@ for (ii in seq_along(intervals_seq)){
     # }
   # }
 }
-graph_grid <- do.call("rbind", graph_grid) %>% 
-  as.data.frame()
+graph_grid <- do.call("rbind", graph_grid) 
 
 # graph_grid %>% 
 #   as.data.frame() %>% 
@@ -217,7 +216,7 @@ table(data_out$clusterTraj)
 
 ## Visualizations
 
-```{r}
+```{r fig.width=10}
 plot_dat <- processed_data %>% 
   left_join(id_node_cluster %>% distinct(covid_id, id, cluster), 
             by = c('id', 'covid_id'))
