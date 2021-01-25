@@ -78,78 +78,84 @@ processed_data <- FupData %>%
 ```
 
 ```{r warning=FALSE, results='hide', message=FALSE}
+mm <- 5
 lab_values_mat <- processed_data[, lab_value_names] %>% 
-  mice(m = 5, maxit = 50, meth = 'pmm', seed = 500) %>% # imputation
-  complete(1) %>% 
-  scale() # prepare for cosine similarity calculation
+  mice(m = mm, maxit = 25, meth = 'pmm', seed = 500) %>% # imputation
+  # complete(1) %>%
+  # scale() %>% # prepare for cosine similarity calculation
+  {.}
+
+lab_values_mat <- lapply(1:mm, function(x) complete(lab_values_mat, x)) %>%
+  do.call(rbind, .) %>%
+  as.matrix() %>%
+  scale()
 ```
 
 ## Perform grid search to select a combination of hyperparameters
 The code in this section is optional.
 
 ```{r fig.width=9}
-intervals_seq <- seq(3, 11, 1)
-overlaps <- 60
-clusts <- 8
-graph_grid <- list()
-
-for (ii in seq_along(intervals_seq)){
-  print(ii)
-  intervals <- intervals_seq[ii]
-  f_sim_map <- map_tda(lab_values_mat,
-                       num_intervals = c(intervals, intervals),
-                       percent_overlap = overlaps,
-                       num_bins_when_clustering = clusts)
-  f_graph <- igraph::graph.adjacency(f_sim_map$adjacency, mode = "undirected")
-  
-  graph_grid[[ii]] <- c(intervals = intervals, overlaps = overlaps,
-                        clust_bins = clusts,
-                        get_graph_properties(f_graph, f_sim_map))
-}
-graph_grid <- do.call("rbind", graph_grid) %>% 
-  as.data.frame()
-
-graph_grid %>% 
-  select(- overlaps, - clust_bins) %>% 
-  pivot_longer(-intervals) %>% 
-  ggplot(aes(x = intervals, y = value)) +
-  geom_point() +
-  scale_x_continuous(breaks = intervals_seq) +
-  facet_wrap(~ name, scales = 'free_y')
+# intervals_seq <- seq(3, 11, 1)
+# overlaps <- 60
+# clusts <- 8
+# graph_grid <- list()
+# 
+# for (ii in seq_along(intervals_seq)){
+#   print(ii)
+#   intervals <- intervals_seq[ii]
+#   f_sim_map <- map_tda(lab_values_mat,
+#                        num_intervals = c(intervals, intervals),
+#                        percent_overlap = overlaps,
+#                        num_bins_when_clustering = clusts)
+#   f_graph <- igraph::graph.adjacency(f_sim_map$adjacency, mode = "undirected")
+#   
+#   graph_grid[[ii]] <- c(intervals = intervals, overlaps = overlaps,
+#                         clust_bins = clusts,
+#                         get_graph_properties(f_graph, f_sim_map))
+# }
+# graph_grid <- do.call("rbind", graph_grid) %>% 
+#   as.data.frame()
+# 
+# graph_grid %>% 
+#   select(- overlaps, - clust_bins) %>% 
+#   pivot_longer(-intervals) %>% 
+#   ggplot(aes(x = intervals, y = value)) +
+#   geom_point() +
+#   scale_x_continuous(breaks = intervals_seq) +
+#   facet_wrap(~ name, scales = 'free_y')
 
 ```
 
 ```{r eval=FALSE, include=FALSE}
-intervals_seq <- seq(3, 11, 1)
-# overlaps_seq <- seq(50, 100, 10)
-# clust_bins <- c(6, 8, 10, 12, 14)
-overlaps <- 50
-clusts <- 6
-graph_grid <- list()
-i <- 0
-for (ii in seq_along(intervals_seq)){
-  # for (p in seq_along(overlaps_seq)){
-    # for (b in seq_along(clust_bins)){
-      i <- i + 1
-      print(ii)
-      intervals <- intervals_seq[ii]
-      # overlaps <- overlaps_seq[p]
-      # clusts <- clust_bins[b]
-
-      f_sim_map <- map_tda(lab_values_mat,
-                     num_intervals = c(intervals, intervals),
-                     percent_overlap = overlaps,
-                     num_bins_when_clustering = clusts)
-      f_graph <- igraph::graph.adjacency(f_sim_map$adjacency, mode = "undirected")
-
-      graph_grid[[i]] <- c(intervals = intervals, overlaps = overlaps,
-                           clust_bins = clusts,
-                           get_graph_properties(f_graph, f_sim_map))
-    # }
-  # }
-}
-graph_grid <- do.call("rbind", graph_grid) 
-
+# intervals_seq <- seq(3, 11, 1)
+# # overlaps_seq <- seq(50, 100, 10)
+# # clust_bins <- c(6, 8, 10, 12, 14)
+# overlaps <- 50
+# clusts <- 6
+# graph_grid <- list()
+# i <- 0
+# for (ii in seq_along(intervals_seq)){
+#   # for (p in seq_along(overlaps_seq)){
+#     # for (b in seq_along(clust_bins)){
+#       i <- i + 1
+#       print(ii)
+#       intervals <- intervals_seq[ii]
+#       # overlaps <- overlaps_seq[p]
+#       # clusts <- clust_bins[b]
+# 
+#       f_sim_map <- map_tda(lab_values_mat,
+#                      num_intervals = c(intervals, intervals),
+#                      percent_overlap = overlaps,
+#                      num_bins_when_clustering = clusts)
+#       f_graph <- igraph::graph.adjacency(f_sim_map$adjacency, mode = "undirected")
+# 
+#       graph_grid[[i]] <- c(intervals = intervals, overlaps = overlaps,
+#                            clust_bins = clusts,
+#                            get_graph_properties(f_graph, f_sim_map))
+#     # }
+#   # }
+# }
+# graph_grid <- do.call("rbind", graph_grid) 
 # graph_grid %>% 
 #   as.data.frame() %>% 
 #   filter(n_comps == 1, clust_bins <= 10) %>% 
@@ -158,9 +164,9 @@ graph_grid <- do.call("rbind", graph_grid)
 
 We chose the hyperparameters to be 6 to be the number of intervals for TDAMapper.
 ```{r}
-graph_grid %>% 
-  # as.data.frame() %>% 
-  filter(intervals == 6)
+# graph_grid %>% 
+#   # as.data.frame() %>% 
+#   filter(intervals == 6)
 ```
 
 
@@ -201,7 +207,7 @@ head(most_similar_traj, 10)
 centroids <- processed_data[, c('id', 'time', lab_value_names)] %>% 
   left_join(id_node_cluster[, c('id', 'node')], by = 'id') %>% 
   group_by(node) %>% 
-  summarise(across(.fns = mean), .groups = 'drop') %>% 
+  summarise(across(.fns = median), .groups = 'drop') %>% 
   select(-id)
 
 node_color <- f_graph$node_color
