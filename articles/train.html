@@ -44,7 +44,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -70,13 +70,13 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/trang1618/tdapseudotime">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
 <li>
   <a href="https://twitter.com/trang1618">
-    <span class="fa fa-twitter"></span>
+    <span class="fas fa-twitter"></span>
      
   </a>
 </li>
@@ -90,14 +90,13 @@
 
       
 
-      </header><script src="train_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="train_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="train_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="train_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Train: Establish topology</h1>
                         <h4 class="author">Trang Le</h4>
             
-            <h4 class="date">2020-10-29</h4>
+            <h4 class="date">2021-01-25</h4>
       
       
       <div class="hidden name"><code>train.Rmd</code></div>
@@ -110,30 +109,30 @@
 <div id="setting-up" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setting-up" class="anchor"></a>Setting up</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tdapseudotime</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/stefvanbuuren/mice">mice</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tdapseudotime</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/amices/mice">mice</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="preprocess" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preprocess" class="anchor"></a>Preprocess</h2>
 <p>Parameters:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">my_file</span> <span class="op">&lt;-</span> <span class="st">'train-data.csv'</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_file</span> <span class="op">&lt;-</span> <span class="st">'train-data.csv'</span>
 
 <span class="co"># TDAMapper parameters (see grid search below)</span>
 <span class="va">n_intervals</span> <span class="op">&lt;-</span> <span class="fl">6</span>
 <span class="va">p_overlaps</span> <span class="op">&lt;-</span> <span class="fl">60</span>
-<span class="va">n_clusts</span> <span class="op">&lt;-</span> <span class="fl">8</span></pre></div>
+<span class="va">n_clusts</span> <span class="op">&lt;-</span> <span class="fl">8</span></code></pre></div>
 <p>Color palette for enrichment: blue &gt; green &gt; yellow &gt; orange &gt; red</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># RColorBrewer::brewer.pal(length(unique(CommunityCluster$membership)), "Set1")</span>
-<span class="va">my_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#00A3DD"</span>, <span class="st">"#60C659"</span>, <span class="st">"#FFBC21"</span>, <span class="st">"#FF7F1E"</span>, <span class="st">"#EF2B2D"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># RColorBrewer::brewer.pal(length(unique(CommunityCluster$membership)), "Set1")</span>
+<span class="va">my_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#00A3DD"</span>, <span class="st">"#60C659"</span>, <span class="st">"#FFBC21"</span>, <span class="st">"#FF7F1E"</span>, <span class="st">"#EF2B2D"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="read-in-data-file" class="section level2">
 <h2 class="hasAnchor">
@@ -141,10 +140,10 @@
 <p>Create a timeline for each subject (being time zero the first observation). Extract lab values to be used for TDA distance matrix.</p>
 <p>Check format: - first col: row id “id” (can be any value, i.e. unique row number) - second col: pts id “covid_id” - third col: date “day”</p>
 <p><em>Need to check whether rowid is important</em></p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">FupData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">my_file</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, colClasses <span class="op">=</span> <span class="st">"character"</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">FupData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">my_file</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, colClasses <span class="op">=</span> <span class="st">"character"</span><span class="op">)</span>
 <span class="va">non_lab_value_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'id'</span>, <span class="st">'covid_id'</span>, <span class="st">'day'</span><span class="op">)</span>
-<span class="va">lab_value_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/generics/man/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">FupData</span><span class="op">)</span>, <span class="va">non_lab_value_names</span><span class="op">)</span>
+<span class="va">lab_value_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">FupData</span><span class="op">)</span>, <span class="va">non_lab_value_names</span><span class="op">)</span>
 
 <span class="va">processed_data</span> <span class="op">&lt;-</span> <span class="va">FupData</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>day <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">day</span>, format <span class="op">=</span> <span class="st">'%Y-%m-%d'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -154,79 +153,64 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span>,
          time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">day</span> <span class="op">-</span> <span class="va">first_date</span>, units <span class="op">=</span> <span class="st">'days'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">covid_id</span>, <span class="va">time</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">lab_value_names</span><span class="op">)</span>, <span class="va">as.numeric</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">lab_value_names</span><span class="op">)</span>, <span class="va">as.numeric</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fl">5</span>
 <span class="va">lab_values_mat</span> <span class="op">&lt;-</span> <span class="va">processed_data</span><span class="op">[</span>, <span class="va">lab_value_names</span><span class="op">]</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/mice/man/mice.html">mice</a></span><span class="op">(</span>m <span class="op">=</span> <span class="fl">5</span>, maxit <span class="op">=</span> <span class="fl">50</span>, meth <span class="op">=</span> <span class="st">'pmm'</span>, seed <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># imputation</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/mice/man/complete.mids.html">complete</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># prepare for cosine similarity calculation</span></pre></div>
+  <span class="fu"><a href="https://amices.org/mice/reference/mice.html">mice</a></span><span class="op">(</span>m <span class="op">=</span> <span class="va">mm</span>, maxit <span class="op">=</span> <span class="fl">25</span>, meth <span class="op">=</span> <span class="st">'pmm'</span>, seed <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># imputation</span>
+  <span class="co"># complete(1) %&gt;%</span>
+  <span class="co"># scale() %&gt;% # prepare for cosine similarity calculation</span>
+  <span class="op">{</span><span class="va">.</span><span class="op">}</span>
+
+<span class="va">lab_values_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">mm</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://amices.org/mice/reference/complete.mids.html">complete</a></span><span class="op">(</span><span class="va">lab_values_mat</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">.</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="perform-grid-search-to-select-a-combination-of-hyperparameters" class="section level2">
 <h2 class="hasAnchor">
 <a href="#perform-grid-search-to-select-a-combination-of-hyperparameters" class="anchor"></a>Perform grid search to select a combination of hyperparameters</h2>
 <p>The code in this section is optional.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">intervals_seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">11</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="va">overlaps</span> <span class="op">&lt;-</span> <span class="fl">60</span>
-<span class="va">clusts</span> <span class="op">&lt;-</span> <span class="fl">8</span>
-<span class="va">graph_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="kw">for</span> <span class="op">(</span><span class="va">ii</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">intervals_seq</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span>
-  <span class="va">intervals</span> <span class="op">&lt;-</span> <span class="va">intervals_seq</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span>
-  <span class="va">f_sim_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/map_tda.html">map_tda</a></span><span class="op">(</span><span class="va">lab_values_mat</span>,
-                       num_intervals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">intervals</span>, <span class="va">intervals</span><span class="op">)</span>,
-                       percent_overlap <span class="op">=</span> <span class="va">overlaps</span>,
-                       num_bins_when_clustering <span class="op">=</span> <span class="va">clusts</span><span class="op">)</span>
-  <span class="va">f_graph</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_adjacency_matrix.html">graph.adjacency</a></span><span class="op">(</span><span class="va">f_sim_map</span><span class="op">$</span><span class="va">adjacency</span>, mode <span class="op">=</span> <span class="st">"undirected"</span><span class="op">)</span>
-  
-  <span class="va">graph_grid</span><span class="op">[[</span><span class="va">ii</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>intervals <span class="op">=</span> <span class="va">intervals</span>, overlaps <span class="op">=</span> <span class="va">overlaps</span>,
-                        clust_bins <span class="op">=</span> <span class="va">clusts</span>,
-                        <span class="fu"><a href="../reference/get_graph_properties.html">get_graph_properties</a></span><span class="op">(</span><span class="va">f_graph</span>, <span class="va">f_sim_map</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
-<pre><code>## [1] 1
-## [1] 2
-## [1] 3
-## [1] 4
-## [1] 5
-## [1] 6
-## [1] 7
-## [1] "Level set has only one point"
-## [1] 8
-## [1] "Level set is empty"
-## [1] "Level set is empty"
-## [1] 9
-## [1] "Level set is empty"
-## [1] "Level set is empty"
-## [1] "Level set has only one point"
-## [1] "Level set has only one point"</code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">graph_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="va">graph_grid</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">graph_grid</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span> <span class="va">overlaps</span>, <span class="op">-</span> <span class="va">clust_bins</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="op">-</span><span class="va">intervals</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">intervals</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="va">intervals_seq</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">name</span>, scales <span class="op">=</span> <span class="st">'free_y'</span><span class="op">)</span></pre></div>
-<p><img src="train_files/figure-html/unnamed-chunk-6-1.png" width="864"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># intervals_seq &lt;- seq(3, 11, 1)</span>
+<span class="co"># overlaps &lt;- 60</span>
+<span class="co"># clusts &lt;- 8</span>
+<span class="co"># graph_grid &lt;- list()</span>
+<span class="co"># </span>
+<span class="co"># for (ii in seq_along(intervals_seq)){</span>
+<span class="co">#   print(ii)</span>
+<span class="co">#   intervals &lt;- intervals_seq[ii]</span>
+<span class="co">#   f_sim_map &lt;- map_tda(lab_values_mat,</span>
+<span class="co">#                        num_intervals = c(intervals, intervals),</span>
+<span class="co">#                        percent_overlap = overlaps,</span>
+<span class="co">#                        num_bins_when_clustering = clusts)</span>
+<span class="co">#   f_graph &lt;- igraph::graph.adjacency(f_sim_map$adjacency, mode = "undirected")</span>
+<span class="co">#   </span>
+<span class="co">#   graph_grid[[ii]] &lt;- c(intervals = intervals, overlaps = overlaps,</span>
+<span class="co">#                         clust_bins = clusts,</span>
+<span class="co">#                         get_graph_properties(f_graph, f_sim_map))</span>
+<span class="co"># }</span>
+<span class="co"># graph_grid &lt;- do.call("rbind", graph_grid) %&gt;% </span>
+<span class="co">#   as.data.frame()</span>
+<span class="co"># </span>
+<span class="co"># graph_grid %&gt;% </span>
+<span class="co">#   select(- overlaps, - clust_bins) %&gt;% </span>
+<span class="co">#   pivot_longer(-intervals) %&gt;% </span>
+<span class="co">#   ggplot(aes(x = intervals, y = value)) +</span>
+<span class="co">#   geom_point() +</span>
+<span class="co">#   scale_x_continuous(breaks = intervals_seq) +</span>
+<span class="co">#   facet_wrap(~ name, scales = 'free_y')</span></code></pre></div>
 <p>We chose the hyperparameters to be 6 to be the number of intervals for TDAMapper.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">graph_grid</span> <span class="op">%&gt;%</span> 
-  <span class="co"># as.data.frame() %&gt;% </span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">intervals</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span></pre></div>
-<pre><code>##   intervals overlaps clust_bins n_comps n_nodes median_degree median_betweeness
-## 1         6       60          8       1      36             3          33.26944
-##   min_elements_per_node edge_density clique_length diameter mean_distance
-## 1                    51    0.0952381            96       10             4</code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># graph_grid %&gt;% </span>
+<span class="co">#   # as.data.frame() %&gt;% </span>
+<span class="co">#   filter(intervals == 6)</span></code></pre></div>
 </div>
 <div id="run-tda-mapper" class="section level2">
 <h2 class="hasAnchor">
 <a href="#run-tda-mapper" class="anchor"></a>Run TDA Mapper</h2>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="va">f_sim_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/map_tda.html">map_tda</a></span><span class="op">(</span><span class="va">lab_values_mat</span>,
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">f_sim_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/map_tda.html">map_tda</a></span><span class="op">(</span><span class="va">lab_values_mat</span>,
                      num_intervals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">n_intervals</span>, <span class="va">n_intervals</span><span class="op">)</span>,
                      percent_overlap <span class="op">=</span> <span class="va">p_overlaps</span>,
                      num_bins_when_clustering <span class="op">=</span> <span class="va">n_clusts</span><span class="op">)</span>
@@ -236,18 +220,18 @@
   enrich_var <span class="op">=</span> <span class="st">'time'</span>, <span class="co"># enrich topology by time for now</span>
   color_method <span class="op">=</span> <span class="st">'clust_color'</span>,
   my_colors <span class="op">=</span> <span class="va">my_colors</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><img src="train_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
 <div id="create-a-minimum-spanning-tree" class="section level2">
 <h2 class="hasAnchor">
 <a href="#create-a-minimum-spanning-tree" class="anchor"></a>Create a minimum spanning tree</h2>
 <p>and compute trajectories and assign observations to nodes in network ### THIS STEP NEED MANUAL REVIEW Check the MST plot and TIME boxplots</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="va">out_trajectories</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/find_trajectories.html">find_trajectories</a></span><span class="op">(</span><span class="va">processed_data</span>, <span class="va">f_sim_map</span>, <span class="va">f_graph</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">out_trajectories</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/find_trajectories.html">find_trajectories</a></span><span class="op">(</span><span class="va">processed_data</span>, <span class="va">f_sim_map</span>, <span class="va">f_graph</span><span class="op">)</span></code></pre></div>
 <p><img src="train_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="va">out_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_similarity.html">compute_similarity</a></span><span class="op">(</span><span class="va">processed_data</span>, <span class="va">f_graph</span><span class="op">$</span><span class="va">node_color</span>, <span class="va">out_trajectories</span>, <span class="va">f_sim_map</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">out_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_similarity.html">compute_similarity</a></span><span class="op">(</span><span class="va">processed_data</span>, <span class="va">f_graph</span><span class="op">$</span><span class="va">node_color</span>, <span class="va">out_trajectories</span>, <span class="va">f_sim_map</span><span class="op">)</span></code></pre></div>
 <pre><code>##                                     trajElmnts clusterTraj
 ## 1                    3 2 1 7 13 14 15 16 17 18         1&gt;2
 ## 2                                 4 5 11 12 18           2
@@ -257,54 +241,54 @@
 ## 6       21 27 26 25 31 32 33 34 35 36 30 24 18       3&gt;4&gt;2
 ## 7 23 22 28 27 26 25 31 32 33 34 35 36 30 24 18     4&gt;3&gt;4&gt;2
 ## 8    29 28 27 26 25 31 32 33 34 35 36 30 24 18     4&gt;3&gt;4&gt;2</code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="va">similarity_df</span> <span class="op">&lt;-</span> <span class="va">out_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">similarity_df</span> <span class="op">&lt;-</span> <span class="va">out_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
 <span class="va">id_node_cluster</span> <span class="op">&lt;-</span> <span class="va">out_list</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>
 <span class="va">most_similar_traj</span> <span class="op">&lt;-</span> <span class="va">similarity_df</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">covid_id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">SJ</span><span class="op">)</span><span class="op">)</span> <span class="co"># use Jaccard similarity</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">most_similar_traj</span>, <span class="fl">10</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">most_similar_traj</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 10 x 11
 ## # Groups:   covid_id [10]
 ##    covid_id trajPaz trajPazclusters trajNumb trajElmnts trajLenght    SJ    SI
 ##    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 1        26 27 … 3 4                    8 29 28 27 …         14 0.429 1    
-##  2 10       20 21 … 3 4 1 2                7 23 22 28 …         15 0.381 0.242
-##  3 100      23 24 … 4 1 3                  8 29 28 27 …         14 0.524 0.611
-##  4 101      13 14 … 1 3 2 4                7 23 22 28 …         15 0.424 0.117
-##  5 102      9 10 1… 1 2 3 4                8 29 28 27 …         14 0.276 0.229
-##  6 103      20 21 … 3 4 1 2                7 23 22 28 …         15 0.519 0.275
-##  7 104      3 4 5 … 1 2 3 4                8 29 28 27 …         14 0.261 0.333
-##  8 105      4 5 6 … 2 3 1 4                7 23 22 28 …         15 0.333 0.297
-##  9 106      14 15 … 1 2 3 4                1 3 2 1 7 1…         10 0.28  0.163
-## 10 107      27 28 … 3 4                    8 29 28 27 …         14 0.429 0.5  
+##  1 1        2 3 4 … 1 2                    4 8 9 10 16…          6 0.333 0.5  
+##  2 10       2 3 4 … 1 2 3 4                1 3 2 1 7 1…         10 0.333 0.182
+##  3 100      5 6 11… 2 1 3                  2 4 5 11 12…          5 0.278 0.278
+##  4 101      13 14 … 1 3 4 2                7 23 22 28 …         15 0.343 0.1  
+##  5 102      15 16 … 1 2 3 4                8 29 28 27 …         14 0.233 0.2  
+##  6 103      2 3 4 … 1 2 3 4                1 3 2 1 7 1…         10 0.333 0.176
+##  7 104      27 28 … 3 4 1 2                7 23 22 28 …         15 0.304 0.389
+##  8 105      28 29 … 4 1 2 3                8 29 28 27 …         14 0.303 0.270
+##  9 106      14 15 … 1 2 3 4                7 23 22 28 …         15 0.370 0.233
+## 10 107      3 4 5 … 1 2                    2 4 5 11 12…          5 0.375 0.25 
 ## # … with 3 more variables: SL &lt;dbl&gt;, JW &lt;dbl&gt;, clusterTraj &lt;chr&gt;</code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="va">centroids</span> <span class="op">&lt;-</span> <span class="va">processed_data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'id'</span>, <span class="st">'time'</span>, <span class="va">lab_value_names</span><span class="op">)</span><span class="op">]</span> <span class="op">%&gt;%</span> 
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">centroids</span> <span class="op">&lt;-</span> <span class="va">processed_data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'id'</span>, <span class="st">'time'</span>, <span class="va">lab_value_names</span><span class="op">)</span><span class="op">]</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">id_node_cluster</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'id'</span>, <span class="st">'node'</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">'id'</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">node</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span>.fns <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">'drop'</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span>.fns <span class="op">=</span> <span class="va">median</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">'drop'</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
 
 <span class="va">node_color</span> <span class="op">&lt;-</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">node_color</span>
-<span class="co"># save(centroids, node_color, out_trajectories, file = '../data/centroids.rda')</span></pre></div>
+<span class="co"># save(centroids, node_color, out_trajectories, file = '../data/centroids.rda')</span></code></pre></div>
 </div>
 <div id="write-output" class="section level2">
 <h2 class="hasAnchor">
 <a href="#write-output" class="anchor"></a>Write output</h2>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="va">data_out</span> <span class="op">&lt;-</span> <span class="va">most_similar_traj</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">covid_id</span>, <span class="va">clusterTraj</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">data_out</span><span class="op">$</span><span class="va">clusterTraj</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">data_out</span> <span class="op">&lt;-</span> <span class="va">most_similar_traj</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">covid_id</span>, <span class="va">clusterTraj</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">data_out</span><span class="op">$</span><span class="va">clusterTraj</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##     1&gt;2       2   3&gt;4&gt;2 4&gt;3&gt;4&gt;2 
-##     184      17      36     311</code></pre>
+##     288      28      17     215</code></pre>
 </div>
 <div id="visualizations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualizations" class="anchor"></a>Visualizations</h2>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="va">plot_dat</span> <span class="op">&lt;-</span> <span class="va">processed_data</span> <span class="op">%&gt;%</span> 
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">plot_dat</span> <span class="op">&lt;-</span> <span class="va">processed_data</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">id_node_cluster</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">covid_id</span>, <span class="va">id</span>, <span class="va">cluster</span><span class="op">)</span>, 
             by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'id'</span>, <span class="st">'covid_id'</span><span class="op">)</span><span class="op">)</span>
 
@@ -314,10 +298,10 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">pal</span><span class="op">$</span><span class="va">color</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">pal</span><span class="op">$</span><span class="va">color</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span>,
-        plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></pre></div>
+        plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="train_files/figure-html/unnamed-chunk-13-1.png" width="960"></p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="va">plot_dat</span> <span class="op">%&gt;%</span> 
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">plot_dat</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">cluster</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">lab_value_names</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="op">-</span> <span class="va">cluster</span>, names_to <span class="op">=</span> <span class="st">'Lab'</span>, values_to <span class="op">=</span> <span class="st">'lab_value'</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">cluster</span>, y <span class="op">=</span> <span class="va">lab_value</span>, fill <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -326,23 +310,23 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">pal</span><span class="op">$</span><span class="va">color</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">f_graph</span><span class="op">$</span><span class="va">pal</span><span class="op">$</span><span class="va">color</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Lab</span>, scales <span class="op">=</span> <span class="st">'free_y'</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Lab</span>, scales <span class="op">=</span> <span class="st">'free_y'</span><span class="op">)</span></code></pre></div>
 <p><img src="train_files/figure-html/unnamed-chunk-13-2.png" width="960"></p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="va">processed_data_traj</span> <span class="op">&lt;-</span> <span class="va">processed_data</span> <span class="op">%&gt;%</span> 
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">processed_data_traj</span> <span class="op">&lt;-</span> <span class="va">processed_data</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">most_similar_traj</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"covid_id"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>clusterTraj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">clusterTraj</span><span class="op">)</span>, <span class="va">time</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">clusterTraj</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">lab_value_names</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="va">processed_data_traj</span>  <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">processed_data_traj</span>  <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">clusterTraj</span><span class="op">)</span>, 
                names_to <span class="op">=</span> <span class="st">'Lab'</span>, values_to <span class="op">=</span> <span class="st">'lab_value'</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">lab_value</span>, colour <span class="op">=</span> <span class="va">clusterTraj</span>, 
              group <span class="op">=</span> <span class="va">clusterTraj</span>, fill <span class="op">=</span> <span class="va">clusterTraj</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"loess"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Lab</span>, scales <span class="op">=</span> <span class="st">'free_y'</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Lab</span>, scales <span class="op">=</span> <span class="st">'free_y'</span><span class="op">)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula 'y ~ x'</code></pre>
 <p><img src="train_files/figure-html/unnamed-chunk-14-1.png" width="1152"></p>
 </div>
