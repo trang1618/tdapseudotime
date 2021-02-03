@@ -16,6 +16,7 @@ library(tdapseudotime)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(mice)
 
 set.seed(1234)
 ```
@@ -52,33 +53,50 @@ and load the data exported from training, `centroids.rda`, which contains
 `f_graph` (igraph object), `out_trajectories`, and the `centroids` data frame.
 
 ```{r}
-test_data <- read.csv(my_test, header = TRUE, colClasses = "character") %>% 
-  rename('covid_id' = patient_num,
-         'time' = days_since_admission)
-non_lab_value_names <- c('id', 'covid_id', 'day')
+# test_data <- read.csv(my_test, header = TRUE, colClasses = "character") %>% 
+#   rename('covid_id' = patient_num,
+#          'time' = days_since_admission)
+# non_lab_value_names <- c('id', 'covid_id', 'day')
+# lab_value_names <- setdiff(names(test_data), non_lab_value_names)
+
+test_data <- read.csv(my_test, header = TRUE) %>% 
+  widen_i2b2()
+
+non_lab_value_names <- c('id', 'covid_id', 'CardiacTroponinHighSensitivity')
 lab_value_names <- setdiff(names(test_data), non_lab_value_names)
-
-
+processed_test <- mutate_at(test_data, dplyr::all_of(lab_value_names), as.numeric)
+dim(processed_test)
 ```
 
 ## Process data
 
 ```{r}
-processed_test <- test_data %>% 
-  group_by(covid_id) %>% 
-  ungroup() %>% 
-  mutate(id = as.integer(id),
-         time = as.numeric(time)) %>% 
-  arrange(covid_id, time) %>% 
-  mutate_at(dplyr::all_of(lab_value_names), as.numeric) %>% 
-  arrange(as.numeric(covid_id), time) %>% 
+# processed_test <- test_data %>% 
+#   group_by(covid_id) %>% 
+#   ungroup() %>% 
+#   mutate(id = as.integer(id),
+#          time = as.numeric(time)) %>% 
+#   arrange(covid_id, time) %>% 
+#   mutate_at(dplyr::all_of(lab_value_names), as.numeric) %>% 
+#   arrange(as.numeric(covid_id), time) %>% 
+#   {.}
+mm <- 5
+lab_values_mat <- processed_test[, lab_value_names] %>% 
+  mice(m = mm, maxit = 25, meth = 'pmm', seed = 500) %>% # imputation
+  # complete(1) %>%
+  # scale() %>% # prepare for cosine similarity calculation
   {.}
+
+lab_values_mat <- lapply(1:mm, function(x) complete(lab_values_mat, x)) %>%
+  do.call(rbind, .) %>%
+  as.matrix() %>%
+  scale()
 ```
 
 ```{r}
 projection_mat <- cosine_sim_func(
-  processed_test %>% select(- c('id', 'covid_id')) %>% as.matrix(), 
-  as.matrix(select(centroids, - node)))
+  lab_values_mat, 
+  as.matrix(select(centroids, - c(node, CardiacTroponinHighSensitivity))))
 
 id_to_node <- data.frame(
   id = processed_test$id,
