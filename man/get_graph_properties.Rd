@@ -26,6 +26,6 @@ Get basic properties of graph
 }
 \examples{
 my_tda <- map_tda(scaled_lab_mat)
-my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
+my_graph <- make_tda_graph(my_tda, processed_data, 'time')
 get_graph_properties(my_graph)
 }

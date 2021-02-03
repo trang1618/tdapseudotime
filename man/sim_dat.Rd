@@ -5,13 +5,9 @@
 \alias{sim_dat}
 \title{Simulated data from github.com/aridag/TDA_PSEUDOTIME.}
 \format{
-A data frame with 200 observations and 21 variables:
-\code{id}, \code{covid_id}, \code{day}, \code{AlanineAminoTransferase},
-\code{AspartateAminotransferase}, \code{Albumin},
-\code{CardiacTroponinHighSensitivity}, \code{CRP}, \code{Creatinine},
-\code{Ddimer}, \code{Ferritin}, \code{Fibrinogen}, \code{LDH}, \code{Lymphocyte},
-\code{Neutrophil}, \code{Procalcitonin}, \code{PT}, \code{Bilirubin},
-\code{WBC}, \code{first_date}, and \code{time}.
+A data frame with 23849 observations and 6 variables:
+\code{siteid}, \code{patient_num}, \code{days_since_admission},
+\code{concept_type}, \code{concept_code}, and \code{value}.
 }
 \usage{
 sim_dat

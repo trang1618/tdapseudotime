@@ -33,8 +33,8 @@ Compute similarity based on trajectory
 }
 \examples{
 my_tda <- map_tda(scaled_lab_mat)
-my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
-my_trajs <- find_trajectories(sim_dat, my_tda, my_graph)
-compute_similarity(sim_dat, my_graph$node_color, my_trajs, my_tda)
+my_graph <- make_tda_graph(my_tda, processed_data, 'time')
+my_trajs <- find_trajectories(processed_data, my_tda, my_graph)
+compute_similarity(processed_data, my_graph$node_color, my_trajs, my_tda)
 
 }

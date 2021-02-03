@@ -36,6 +36,6 @@ weighting edges and color nodes.
 }
 \examples{
 my_tda <- map_tda(scaled_lab_mat)
-make_tda_graph(my_tda, sim_dat, 'time')
+make_tda_graph(my_tda, processed_data, 'time')
 
 }

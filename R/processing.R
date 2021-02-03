@@ -13,7 +13,7 @@ widen_i2b2 <- function(df) {
     tidyr::pivot_wider(names_from = 'concept_code',
                        values_from = 'value',
                        values_fn = mean) %>%
-    mutate(id = row_number()) %>%
+    mutate(id = dplyr::row_number()) %>%
     select(
       id,
       covid_id	=	patient_num,
@@ -74,8 +74,8 @@ convert_id_to_node <- function(f_sim_map, processed_data) {
 #'
 #' @examples
 #' my_tda <- map_tda(scaled_lab_mat)
-#' my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
-#' my_trajs <- find_trajectories(sim_dat, my_tda, my_graph)
+#' my_graph <- make_tda_graph(my_tda, processed_data, 'time')
+#' my_trajs <- find_trajectories(processed_data, my_tda, my_graph)
 #' head(my_trajs[[1]])
 #' head(my_trajs[[2]])
 #'
@@ -109,9 +109,9 @@ find_trajectories <- function(processed_data, f_sim_map, f_graph) {
 #' @export
 #' @examples
 #' my_tda <- map_tda(scaled_lab_mat)
-#' my_graph <- make_tda_graph(my_tda, sim_dat, 'time')
-#' my_trajs <- find_trajectories(sim_dat, my_tda, my_graph)
-#' compute_similarity(sim_dat, my_graph$node_color, my_trajs, my_tda)
+#' my_graph <- make_tda_graph(my_tda, processed_data, 'time')
+#' my_trajs <- find_trajectories(processed_data, my_tda, my_graph)
+#' compute_similarity(processed_data, my_graph$node_color, my_trajs, my_tda)
 #'
 compute_similarity <- function(
   processed_data, node_color, trajectories, f_sim_map = NULL, verbose = TRUE) {
