@@ -4,7 +4,7 @@ author: 'Trang Le'
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Establish topology}
+  %\VignetteIndexEntry{Train: Establish topology}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[UTF-8]{inputenc}
 ---

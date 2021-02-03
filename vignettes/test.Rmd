@@ -4,7 +4,7 @@ author: 'Trang Le'
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Project test observations onto existing topolgy}
+  %\VignetteIndexEntry{Test: Project observations onto existing topolgy}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[UTF-8]{inputenc}
 ---
