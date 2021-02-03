@@ -1,3 +1,42 @@
+#' Convert i2b2 observation dataframe from long to wide.
+#'
+#' @param df i2b2 observation dataframe.
+#'
+#' @return Wide dataframe.
+#' @export
+#'
+#' @examples widen_i2b2(sim_dat)
+widen_i2b2 <- function(df) {
+  df %>%
+    dplyr::filter(concept_type == 'LAB-LOINC') %>%
+    dplyr::arrange(patient_num, days_since_admission) %>%
+    tidyr::pivot_wider(names_from = 'concept_code',
+                       values_from = 'value',
+                       values_fn = mean) %>%
+    mutate(id = row_number()) %>%
+    select(
+      id,
+      covid_id	=	patient_num,
+      time	=	days_since_admission,
+      AlanineAminoTransferase	=	"1742-6",
+      Albumin	=	"1751-7",
+      AspartateAminotransferase	=	"1920-8",
+      Bilirubin	=	"1975-2",
+      CRP	=	"1988-5",
+      CardiacTroponinHighSensitivity	=	"49563-0",
+      Creatinine	=	"2160-0",
+      Ddimer	=	"48065-7",
+      Ferritin	=	"2276-4",
+      Fibrinogen	=	"3255-7",
+      LDH	=	"2532-0",
+      Lymphocyte	=	"731-0",
+      Neutrophil	=	"751-8",
+      Procalcitonin	=	"33959-8",
+      PT	=	"5902-2",
+      WBC	=	"6690-2"
+    )
+}
+
 #' Assign observations (ids) to nodes in network.
 #'
 #' @param f_sim_map TDAmapper object

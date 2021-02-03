@@ -62,19 +62,13 @@ Check format:
 *Need to check whether rowid is important*
 
 ```{r}
-FupData <- read.csv(my_file, header = TRUE, colClasses = "character")
-non_lab_value_names <- c('id', 'covid_id', 'day')
-lab_value_names <- setdiff(names(FupData), non_lab_value_names)
+FupData <- read.csv(my_file, header = TRUE) %>% 
+  widen_i2b2()
 
-processed_data <- FupData %>% 
-  mutate(day = as.Date(day, format = '%Y-%m-%d')) %>% 
-  group_by(covid_id) %>% 
-  mutate(first_date = min(day)) %>% 
-  ungroup() %>% 
-  mutate(id = as.integer(id),
-         time = as.numeric(day - first_date, units = 'days')) %>% 
-  arrange(covid_id, time) %>% 
-  mutate_at(dplyr::all_of(lab_value_names), as.numeric)
+non_lab_value_names <- c('id', 'covid_id', 'CardiacTroponinHighSensitivity')
+lab_value_names <- setdiff(names(FupData), non_lab_value_names)
+processed_data <- mutate_at(FupData, dplyr::all_of(lab_value_names), as.numeric)
+dim(processed_data)
 ```
 
 ```{r warning=FALSE, results='hide', message=FALSE}
@@ -204,7 +198,7 @@ most_similar_traj <- similarity_df %>%
 
 head(most_similar_traj, 10)
 
-centroids <- processed_data[, c('id', 'time', lab_value_names)] %>% 
+centroids <- processed_data[, c('id', lab_value_names)] %>% 
   left_join(id_node_cluster[, c('id', 'node')], by = 'id') %>% 
   group_by(node) %>% 
   summarise(across(.fns = median), .groups = 'drop') %>% 
@@ -253,7 +247,7 @@ processed_data_traj <- processed_data %>%
   distinct()
 ```
 
-```{r fig.width=12, fig.height=8}
+```{r fig.width=12, fig.height=8, warning=FALSE, message=FALSE}
 processed_data_traj  %>% 
   pivot_longer(- c(time, clusterTraj), 
                names_to = 'Lab', values_to = 'lab_value') %>% 
@@ -263,6 +257,4 @@ processed_data_traj  %>%
   theme(legend.position = "none") +
   facet_wrap(~ Lab, scales = 'free_y')
 ```
-
-
 
