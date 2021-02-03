@@ -174,26 +174,10 @@ All the trajectory or choose the nodes.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>my_tda</span> <span class='op'>&lt;-</span> <span class='fu'><a href='map_tda.html'>map_tda</a></span><span class='op'>(</span><span class='va'>scaled_lab_mat</span><span class='op'>)</span>
 <span class='va'>my_graph</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_tda_graph.html'>make_tda_graph</a></span><span class='op'>(</span><span class='va'>my_tda</span>, <span class='va'>sim_dat</span>, <span class='st'>'time'</span><span class='op'>)</span>
-</div><div class='img'><img src='find_trajectories-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>my_trajs</span> <span class='op'>&lt;-</span> <span class='fu'>find_trajectories</span><span class='op'>(</span><span class='va'>sim_dat</span>, <span class='va'>my_tda</span>, <span class='va'>my_graph</span><span class='op'>)</span>
-</div><div class='img'><img src='find_trajectories-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>my_trajs</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $res
-#&gt; $res[[1]]
-#&gt; + 8/? vertices, from a23fe5d (deleted):
-#&gt; [1]  2  1  6 11 16 17 22 23
-#&gt; 
-#&gt; 
-#&gt; $nrgeo
-#&gt;  [1] 1 1 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>my_trajs</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $res
-#&gt; $res[[1]]
-#&gt; + 9/? vertices, from a23fe5d (deleted):
-#&gt; [1]  3  8  9 10 15 14 19 24 23
-#&gt; 
-#&gt; 
-#&gt; $nrgeo
-#&gt;  [1] 0 0 1 1 1 0 1 1 1 1 0 0 0 1 1 0 0 0 1 1 0 0 1 1 1 1
-#&gt; </div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in `[.data.frame`(data, , c("id", "time")): undefined columns selected</span></div><div class='input'><span class='va'>my_trajs</span> <span class='op'>&lt;-</span> <span class='fu'>find_trajectories</span><span class='op'>(</span><span class='va'>sim_dat</span>, <span class='va'>my_tda</span>, <span class='va'>my_graph</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in "igraph" %in% class(graph): object 'my_graph' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>my_trajs</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in head(my_trajs[[1]]): object 'my_trajs' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>my_trajs</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in head(my_trajs[[2]]): object 'my_trajs' not found</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
