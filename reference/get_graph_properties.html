@@ -173,9 +173,14 @@ edge density, etc.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>my_tda</span> <span class='op'>&lt;-</span> <span class='fu'><a href='map_tda.html'>map_tda</a></span><span class='op'>(</span><span class='va'>scaled_lab_mat</span><span class='op'>)</span>
-<span class='va'>my_graph</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_tda_graph.html'>make_tda_graph</a></span><span class='op'>(</span><span class='va'>my_tda</span>, <span class='va'>sim_dat</span>, <span class='st'>'time'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in `[.data.frame`(data, , c("id", "time")): undefined columns selected</span></div><div class='input'><span class='fu'>get_graph_properties</span><span class='op'>(</span><span class='va'>my_graph</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in "igraph" %in% class(graph): object 'my_graph' not found</span></div></pre>
+<span class='va'>my_graph</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_tda_graph.html'>make_tda_graph</a></span><span class='op'>(</span><span class='va'>my_tda</span>, <span class='va'>processed_data</span>, <span class='st'>'time'</span><span class='op'>)</span>
+</div><div class='img'><img src='get_graph_properties-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>get_graph_properties</span><span class='op'>(</span><span class='va'>my_graph</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt;               n_comps               n_nodes         median_degree 
+#&gt;             1.0000000            25.0000000             3.0000000 
+#&gt;     median_betweeness min_elements_per_node          edge_density 
+#&gt;            27.0000000                   Inf             0.1333333 
+#&gt;         clique_length              diameter         mean_distance 
+#&gt;            65.0000000            89.1768901             3.3333333 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
